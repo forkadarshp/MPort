@@ -12,8 +12,19 @@
 
 An AI agent skill for safe, production-grade LLM model migrations. Automate behavior-preserving upgrades across prompts, agents, API callers, and tests. Universal and plug-and-play across Codex, Claude Code, Cursor, and more.
 
-**The Problem:** Most model migrations fail after you change the model ID because search-and-replace breaks tool calling, parser behavior, and orchestration.  
-**The Solution:** ModelPort treats migration as a behavior-preservation problem: it maps callers, separates required compatibility fixes from optional tuning, and mandates validation before finishing.
+**The model ID is one line. The behavior around it is everything else.**
+Most migrations break because search-and-replace silently shatters tool calling,
+parsers, and orchestration. ModelPort treats a swap as behavior preservation:
+
+```text
+  # the naive migration         ┄ what a find/replace does
+  $ grep -rl 'opus-4-7' . | xargs sed -i 's/4-7/4-8/g'
+  x tool calls break      x parser drift        x silent prod regressions
+
+  # the ModelPort migration     ┄ behavior-preserving
+  > migrate this repo to claude-opus-4-8, keep behavior, prove it
+  ✓ callers mapped        ✓ contract held       ✓ tests + rollback evidence
+```
 
 ## Now shipping: Claude Opus 4.8 (released 2026-05-28)
 
@@ -77,6 +88,43 @@ contracts, no proof, and no way back.
 ╰───────────────────────────────────┴───────────────────────────────────╯
 ```
 
+## Benchmark your migration (optional)
+
+Opt in at the start and ModelPort ends with **measured evidence, not vibes**. It
+runs the same eval set against three configurations so the raw model delta and
+the skill's added value are attributed separately:
+
+- **Baseline** — old model + old prompts (where you started)
+- **Naive swap** — new model + old prompts (what a find/replace would get you)
+- **ModelPort-enhanced** — new model + skill-enhanced system (where you land)
+
+A raw swap tends to regress exactly the things that don't survive a model change
+on their own — output contracts, tool calls, and parse-able format — because
+newer models follow instructions more literally and re-tokenize differently.
+The enhanced arm is where the skill's fixes earn their keep. Illustrative
+leaderboard (your run produces the actual measured numbers):
+
+```text
+╭──────────────────────┬────────────┬────────────┬────────────╮
+│ metric               │ baseline   │ naive swap │ ModelPort  │
+│                      │ (old/old)  │ (new/old)  │ (new/enh.) │
+├──────────────────────┼────────────┼────────────┼────────────┤
+│  task success        │        82% │        84% │        91% │
+│  output contract     │        93% │        89% │        98% │
+│  tool-call accuracy  │        90% │        83% │        96% │
+│  p95 latency         │       3.9s │       2.4s │       2.6s │
+│  cost / req          │     $0.052 │     $0.047 │     $0.045 │
+│  refusal / halluc.   │       2.8% │       2.1% │       1.4% │
+├──────────────────────┼────────────┼────────────┼────────────┤
+│  composite (50/30/20)│       0.80 │       0.83 │       0.91 │
+╰──────────────────────┴────────────┴────────────┴────────────╯
+```
+
+Numbers above are illustrative, not measured results — latency and cost in
+particular move with the target model and are always reported as measured, never
+assumed. Methodology, metric definitions, and composite scoring live in
+[references/benchmarking.md](references/benchmarking.md).
+
 ## Why teams use it
 
 - Replace deprecated model IDs without breaking runtime calls.
@@ -84,6 +132,7 @@ contracts, no proof, and no way back.
 - Separate required compatibility fixes from optional prompt tuning.
 - Choose direct swap, adapter, shadow mode, canary, or phased rollout.
 - Produce validation evidence and rollback notes.
+- Benchmark pre vs. post (and raw-swap control) to quantify the upgrade.
 
 ## Quick start
 
@@ -146,6 +195,7 @@ For detailed migration requests, start from
 | Tools | Schemas, descriptions, validation rules, guardrails |
 | Config | Model registries, routers, feature flags, rollout controls |
 | Tests and docs | Fixtures, assertions, examples, migration notes |
+| Benchmarks | Optional pre/post stats: quality, latency, cost, contract drift |
 
 ## Built for real migrations
 
@@ -185,6 +235,7 @@ The skill guides Codex to produce a migration report with:
 - Proof evidence
 - Risks and follow-up recommendations
 - Rollback notes
+- Benchmark results (when benchmarking was requested)
 
 See [examples/example-output.md](examples/example-output.md) for a sample report.
 
@@ -206,6 +257,7 @@ See [examples/example-output.md](examples/example-output.md) for a sample report
 ├── templates/
 │   └── migration-starter-prompt.md
 ├── references/
+│   ├── benchmarking.md
 │   ├── migration-patterns.md
 │   ├── migration-playbook.md
 │   ├── output-style.md
@@ -251,7 +303,8 @@ npx markdownlint-cli2 "**/*.md"
 - Per-model migration guides for Claude Opus 4.8 / 4.6, Sonnet 4.5, and GPT-5.5
   ship today in `references/models/`. Next: Gemini and self-hosted models.
 - Add regression fixtures for prompt, tool, and structured-output migrations.
-- Add benchmark examples for latency, token usage, and output contract drift.
+- Ship a runnable benchmark harness to auto-collect the three-arm leaderboard
+  (the methodology lands today in `references/benchmarking.md`).
 - Add real-world before/after migration case studies.
 
 ## Contributing
