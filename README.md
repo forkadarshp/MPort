@@ -17,13 +17,13 @@ Most migrations break because search-and-replace silently shatters tool calling,
 parsers, and orchestration. ModelPort treats a swap as behavior preservation:
 
 ```text
-  # the naive migration                       ┄ what a find/replace does
+  # the naive migration         ┄ what a find/replace does
   $ grep -rl 'opus-4-7' . | xargs sed -i 's/4-7/4-8/g'
-    x tool calls break     x parser drift     x silent prod regressions
+  x tool calls break      x parser drift        x silent prod regressions
 
-  # the ModelPort migration                   ┄ behavior-preserving
+  # the ModelPort migration     ┄ behavior-preserving
   > migrate this repo to claude-opus-4-8, keep behavior, prove it
-    ✓ callers mapped       ✓ contract held    ✓ tests + rollback evidence
+  ✓ callers mapped        ✓ contract held       ✓ tests + rollback evidence
 ```
 
 ## Now shipping: Claude Opus 4.8 (released 2026-05-28)
