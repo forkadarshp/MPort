@@ -76,7 +76,7 @@ Plan thoroughly, execute in phases.
 
 Collect before editing:
 
-- Source model/provider → destination model/provider
+- Source model/provider/version → destination model/provider/version
 - Scope: exact files, directories, or whole repo
 - Migration mode:
   - In-place replacement
@@ -85,6 +85,10 @@ Collect before editing:
 - Constraints: latency, cost, output format, safety/compliance
 - Success criteria: quality, speed, token/cost, compatibility
 - Evidence requirements: unit tests, evals, live smoke checks, rollout metrics
+
+If source or target matches a model with a dedicated guide in
+`references/models/`, read that guide before proceeding. Model guides contain
+changelogs, breaking changes, migration steps, and version-specific quirks.
 
 Scope not explicit → ask once, wait.
 
@@ -114,6 +118,9 @@ Read:
 
 - `references/migration-playbook.md`
 - `references/provider-checklists.md`
+- `references/models/<model>.md` — when source or target matches a model with
+  a dedicated guide (e.g. `claude-opus-4-8.md`, `claude-opus-4-6.md`,
+  `claude-sonnet-4-5.md`, `gpt-5-5.md`)
 - `references/prompt-template-research.md` — when creating or improving a
   migration prompt or reusable migration request
 - `references/migration-patterns.md` — when choosing rollout strategy,
@@ -218,6 +225,8 @@ Format per `examples/example-output.md`.
 
 - Migration strategy: `references/migration-playbook.md`
 - Provider checklists: `references/provider-checklists.md`
+- Model-specific guides: `references/models/` (per-version changelogs, quirks,
+  migration steps)
 - Prompt design research: `references/prompt-template-research.md`
 - Migration patterns: `references/migration-patterns.md`
 - Validation proof gates: `references/validation-proof.md`

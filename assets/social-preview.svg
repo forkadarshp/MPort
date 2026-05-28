@@ -1,43 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
   <title id="title">ModelPort</title>
   <desc id="desc">Safe LLM upgrades for prompts, agents, and production code.</desc>
-  <rect width="1280" height="640" fill="#0f172a"/>
-  <rect x="72" y="72" width="1136" height="496" rx="28" fill="#111827" stroke="#334155" stroke-width="2"/>
-  <text x="112" y="160" fill="#f8fafc" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="64" font-weight="800">
-    ModelPort
+  <rect width="1280" height="640" fill="#09090b"/>
+  
+  <text x="120" y="110" fill="#10b981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="24" font-weight="bold" xml:space="preserve">
+<tspan x="120" dy="0">  __  __           _      _ _____           _   </tspan>
+<tspan x="120" dy="28"> |  \/  |         | |    | |  __ \         | |  </tspan>
+<tspan x="120" dy="28"> | \  / | ___   __| | ___| | |__) |__  _ __| |_ </tspan>
+<tspan x="120" dy="28"> | |\/| |/ _ \ / _` |/ _ \ |  ___/ _ \| '__| __|</tspan>
+<tspan x="120" dy="28"> | |  | | (_) | (_| |  __/ | |  | (_) | |  | |_ </tspan>
+<tspan x="120" dy="28"> |_|  |_|\___/ \__,_|\___|_|_|   \___/|_|   \__|</tspan>
   </text>
-  <text x="116" y="218" fill="#cbd5e1" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="30" font-weight="500">
-    Safe LLM upgrades for prompts, agents, and production code
+
+  <text x="120" y="320" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="20" xml:space="preserve">
+<tspan x="120" dy="0" fill="#3f3f46">+------------------------------------------------------------------------------------------+</tspan>
+<tspan x="120" dy="24" fill="#3f3f46">|                                                                                          |</tspan>
+<tspan x="120" dy="24" fill="#3f3f46">|   </tspan><tspan fill="#10b981">&gt; </tspan><tspan fill="#e4e4e7">Safe LLM upgrades for prompts, agents, and production code.                          </tspan><tspan fill="#3f3f46">|</tspan>
+<tspan x="120" dy="24" fill="#3f3f46">|                                                                                          |</tspan>
+<tspan x="120" dy="24" fill="#3f3f46">|                                                                                          |</tspan>
+<tspan x="120" dy="24" fill="#3f3f46">|   </tspan><tspan fill="#f43f5e">[ Legacy Provider ] </tspan><tspan fill="#52525b">==========&gt; </tspan><tspan fill="#0ea5e9">( ModelPort Engine ) </tspan><tspan fill="#52525b">==========&gt; </tspan><tspan fill="#10b981">[ Next-Gen Model ]    </tspan><tspan fill="#3f3f46">|</tspan>
+<tspan x="120" dy="24" fill="#3f3f46">|                                                                                          |</tspan>
+<tspan x="120" dy="24" fill="#3f3f46">|                                                                                          |</tspan>
+<tspan x="120" dy="24" fill="#3f3f46">|   </tspan><tspan fill="#10b981">&gt; </tspan><tspan fill="#a1a1aa">init migration_protocol </tspan><tspan fill="#52525b">.................................................... </tspan><tspan fill="#10b981">[ OK ]  </tspan><tspan fill="#3f3f46">|</tspan>
+<tspan x="120" dy="24" fill="#3f3f46">|   </tspan><tspan fill="#10b981">&gt; </tspan><tspan fill="#a1a1aa">mapping caller routes </tspan><tspan fill="#52525b">...................................................... </tspan><tspan fill="#10b981">[ OK ]  </tspan><tspan fill="#3f3f46">|</tspan>
+<tspan x="120" dy="24" fill="#3f3f46">|   </tspan><tspan fill="#10b981">&gt; </tspan><tspan fill="#a1a1aa">applying surgical code patches </tspan><tspan fill="#52525b">............................................. </tspan><tspan fill="#10b981">[ OK ]  </tspan><tspan fill="#3f3f46">|</tspan>
+<tspan x="120" dy="24" fill="#3f3f46">|   </tspan><tspan fill="#10b981">&gt; </tspan><tspan fill="#a1a1aa">running regression evals </tspan><tspan fill="#52525b">................................................... </tspan><tspan fill="#10b981">[ OK ]  </tspan><tspan fill="#3f3f46">|</tspan>
+<tspan x="120" dy="24" fill="#3f3f46">|                                                                                          |</tspan>
+<tspan x="120" dy="24" fill="#3f3f46">+------------------------------------------------------------------------------------------+</tspan>
   </text>
-  <g transform="translate(116 302)">
-    <rect x="0" y="0" width="230" height="112" rx="16" fill="#1e293b" stroke="#475569" stroke-width="2"/>
-    <text x="28" y="46" fill="#f8fafc" font-family="Inter, ui-sans-serif, system-ui" font-size="28" font-weight="700">Old Model</text>
-    <text x="28" y="82" fill="#94a3b8" font-family="Inter, ui-sans-serif, system-ui" font-size="20">Prompts + code</text>
-  </g>
-  <path d="M374 358H506" stroke="#38bdf8" stroke-width="8" stroke-linecap="round"/>
-  <path d="M506 358L478 338M506 358L478 378" stroke="#38bdf8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-  <g transform="translate(530 276)">
-    <rect x="0" y="0" width="270" height="164" rx="18" fill="#0f766e" stroke="#5eead4" stroke-width="2"/>
-    <text x="30" y="54" fill="#ecfeff" font-family="Inter, ui-sans-serif, system-ui" font-size="30" font-weight="800">Migration</text>
-    <text x="30" y="92" fill="#ccfbf1" font-family="Inter, ui-sans-serif, system-ui" font-size="22">classify</text>
-    <text x="30" y="124" fill="#ccfbf1" font-family="Inter, ui-sans-serif, system-ui" font-size="22">adapt</text>
-    <text x="142" y="124" fill="#ccfbf1" font-family="Inter, ui-sans-serif, system-ui" font-size="22">validate</text>
-  </g>
-  <path d="M828 358H960" stroke="#22c55e" stroke-width="8" stroke-linecap="round"/>
-  <path d="M960 358L932 338M960 358L932 378" stroke="#22c55e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-  <g transform="translate(984 302)">
-    <rect x="0" y="0" width="180" height="112" rx="16" fill="#14532d" stroke="#4ade80" stroke-width="2"/>
-    <text x="28" y="46" fill="#f0fdf4" font-family="Inter, ui-sans-serif, system-ui" font-size="28" font-weight="700">New</text>
-    <text x="28" y="82" fill="#bbf7d0" font-family="Inter, ui-sans-serif, system-ui" font-size="20">safe rollout</text>
-  </g>
-  <g transform="translate(116 484)">
-    <rect x="0" y="0" width="176" height="44" rx="22" fill="#172554" stroke="#2563eb" stroke-width="2"/>
-    <text x="24" y="29" fill="#dbeafe" font-family="Inter, ui-sans-serif, system-ui" font-size="18" font-weight="700">Prompt migration</text>
-    <rect x="196" y="0" width="158" height="44" rx="22" fill="#422006" stroke="#f59e0b" stroke-width="2"/>
-    <text x="220" y="29" fill="#fef3c7" font-family="Inter, ui-sans-serif, system-ui" font-size="18" font-weight="700">Agent tuning</text>
-    <rect x="374" y="0" width="156" height="44" rx="22" fill="#3b0764" stroke="#a855f7" stroke-width="2"/>
-    <text x="398" y="29" fill="#f3e8ff" font-family="Inter, ui-sans-serif, system-ui" font-size="18" font-weight="700">Tool safety</text>
-    <rect x="550" y="0" width="134" height="44" rx="22" fill="#052e16" stroke="#22c55e" stroke-width="2"/>
-    <text x="574" y="29" fill="#dcfce7" font-family="Inter, ui-sans-serif, system-ui" font-size="18" font-weight="700">Rollback</text>
-  </g>
 </svg>

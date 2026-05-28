@@ -10,7 +10,7 @@
 
 **Production-grade LLM migrations: Swap models safely across agents, prompts, and code.**
 
-An AI agent skill for safe, production-grade LLM model migrations. Automate behavior-preserving upgrades across prompts, agents, API callers, and tests.
+An AI agent skill for safe, production-grade LLM model migrations. Automate behavior-preserving upgrades across prompts, agents, API callers, and tests. Universal and plug-and-play across Codex, Claude Code, Cursor, and more.
 
 **The Problem:** Most model migrations fail after you change the model ID because search-and-replace breaks tool calling, parser behavior, and orchestration.  
 **The Solution:** ModelPort treats migration as a behavior-preservation problem: it maps callers, separates required compatibility fixes from optional tuning, and mandates validation before finishing.
@@ -25,6 +25,22 @@ An AI agent skill for safe, production-grade LLM model migrations. Automate beha
 
 ## Quick start
 
+Install ModelPort globally for all compatible AI agents (Codex, Claude Code, Cursor, etc.) using the universal skills CLI:
+
+```bash
+npx skills add forkadarshp/MPort
+```
+
+*Alternatively, if you use multiple agents on the same machine:*
+
+```bash
+npx agent-skills-cli add forkadarshp/MPort
+```
+
+### Manual Installation (Advanced)
+
+If you prefer to fork and modify the skill locally:
+
 Clone:
 
 ```bash
@@ -32,7 +48,7 @@ git clone https://github.com/forkadarshp/MPort.git
 cd MPort
 ```
 
-Install as a local Codex skill with a symlink:
+Install as a local skill with a symlink (Codex example):
 
 ```bash
 mkdir -p ~/.codex/skills

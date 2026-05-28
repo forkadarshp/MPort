@@ -13,6 +13,11 @@ Migrate the selected scope from:
 - Source provider/model/version: {SOURCE_MODEL}
 - Target provider/model/version: {TARGET_MODEL}
 
+If a model-specific guide exists in `references/models/` for either the source
+or target model, read it before proceeding. These guides contain changelogs,
+breaking changes, migration steps, and version-specific quirks that must inform
+the migration plan.
+
 The migration must preserve required behavior, improve behavior only where
 evidence supports it, and produce validation evidence plus rollback notes.
 

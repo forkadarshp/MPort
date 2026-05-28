@@ -11,6 +11,9 @@ Provider-specific reminders to use during migration.
 - Verify structured output mode and schema handling.
 - Run at least one streamed and one non-streamed smoke test where relevant.
 
+For version-specific changelogs, breaking changes, and quirks, see the
+dedicated model guides in `references/models/` (e.g. `claude-opus-4-8.md`).
+
 Reference: [Anthropic model deprecations](https://docs.anthropic.com/en/docs/resources/model-deprecations)
 
 ## OpenAI-family migration checklist
@@ -20,6 +23,9 @@ Reference: [Anthropic model deprecations](https://docs.anthropic.com/en/docs/res
 - Confirm any reasoning-effort/config fields are valid for target model.
 - Validate JSON mode/structured output behavior if used.
 - Re-check system prompt behavior under new model family.
+
+For version-specific changelogs, reasoning effort levels, and migration steps,
+see the dedicated model guides in `references/models/` (e.g. `gpt-5-5.md`).
 
 Reference: [OpenAI model endpoint compatibility](https://platform.openai.com/docs/models)
 
