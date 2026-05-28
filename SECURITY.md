@@ -5,7 +5,7 @@
 If you discover a security issue, please do not open a public issue first.
 
 Report vulnerabilities through
-[GitHub Security Advisories](https://github.com/forkxp/migration-skill/security/advisories/new)
+[GitHub Security Advisories](https://github.com/forkadarshp/MPort/security/advisories/new)
 so the report stays private until a fix is ready.
 
 Include:

@@ -77,9 +77,11 @@ Run or explain why you cannot run:
 - Tool-call trace if tools are involved
 - Shadow/canary metric plan if production rollout is risky
 
-## Required Report (Caveman Style)
+## Report
 
-Return the report in a hyper-concise "caveman" style to save tokens. No conversational filler, dense bullet points only, and only actionable diffs/evidence.
+Default concise output mode (defined in SKILL.md). Dense bullets, diffs only, no filler.
+
+Sections:
 
 1. Migration Summary
 2. Scope and Files Changed

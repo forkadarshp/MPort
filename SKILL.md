@@ -5,181 +5,190 @@ description: Use when the user asks to migrate, upgrade, or port prompts, agents
 
 # ModelPort Skill
 
-Production-grade LLM migrations: Swap models safely across agents, prompts, and code.
+Production-grade LLM migrations. Swap models safely across agents, prompts,
+and code.
 
-## Purpose
+## Default Output Mode
 
-Deliver end-to-end migration outcomes, not just string replacement. Preserve
-behavior where needed, improve behavior where possible, and validate that the
-new model integration is correct, stable, and measurable.
+Every response from this skill is hyper-concise. No exceptions unless the user
+explicitly requests verbose output.
 
-## Production Standards
+- No conversational filler, no pleasantries, no intro/outro.
+- Dense bullet points. Omit verbs where possible.
+- `->` for state transitions (e.g. `GPT-4 -> Claude-3`).
+- Code diffs only — never reprint entire files.
+- State only: what changed, why, what was validated.
+- Every token must earn its place.
 
-Before implementing:
+## Operating Principles
 
-1. Scan relevant files and architecture first.
-2. State assumptions explicitly.
-3. Check existing work, open changes, issue/PR notes, and handoff artifacts when
-   available.
-4. Ask for clarification when scope is ambiguous.
+Adapted from the Karpathy guidelines for AI coding agents, applied to
+migration work.
 
-When implementing:
+### Think before editing
 
-1. Make minimal, targeted edits.
-2. Follow repository conventions and coding style.
-3. Preserve backward-compatible paths unless the user asks to remove them.
+Don't assume. Don't hide confusion. Surface tradeoffs.
 
-Quality:
+- State assumptions explicitly. If uncertain, ask.
+- Multiple interpretations exist → present them, don't pick silently.
+- Scope ambiguous → ask one scope-selection question, wait.
+- Check existing work: branch/PR context, issue notes, handoff files,
+  another agent's partial implementation. Understand before editing.
 
-1. Distinguish required fixes from optional tuning.
-2. Validate runtime behavior with tests and smoke checks.
-3. Provide a clear migration report with risks, remaining work, and follow-ups.
+### Simplicity first
 
-## Inputs Required
+Minimum change that solves the migration. Nothing speculative.
 
-Collect these before editing:
+- No features beyond what was asked.
+- No abstractions for single-use paths.
+- No "flexibility" that wasn't requested.
+- If you wrote 50 lines and it could be 10 diffs, rewrite.
 
-- Source model/provider and destination model/provider
-- Scope (exact files, directories, or whole repo)
+### Surgical changes
+
+Touch only what must change. Clean up only your own mess.
+
+- Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+- Match existing style, even if you'd do it differently.
+- Required fixes ≠ optional tuning — never mix, always label.
+- Preserve backward-compatible paths unless user says remove them.
+
+### Goal-driven execution
+
+Define success criteria before writing code. Loop until verified.
+
+- Transform vague tasks into verifiable goals.
+- "Migrate X" → tests pass + smoke request succeeds + contract holds.
+- Run validation after each meaningful change.
+- If a check fails: diagnose → patch narrowly → retry the failed check.
+- Don't claim completion without proof evidence.
+
+### Iterative & targeted
+
+Plan thoroughly, execute in phases.
+
+- Research the codebase fully before implementation starts.
+- Pick a targeted section (e.g., one component, one workflow) — no whole-repo big bangs.
+- Implement and validate phase-by-phase.
+
+## Inputs
+
+Collect before editing:
+
+- Source model/provider → destination model/provider
+- Scope: exact files, directories, or whole repo
 - Migration mode:
   - In-place replacement
   - Side-by-side dual-model support
   - Phased rollout with feature flags
-- Constraints (latency, cost, output format, safety/compliance)
-- Success criteria (quality, speed, token/cost, compatibility)
-- Evidence requirements (unit tests, evals, live smoke checks, rollout metrics)
+- Constraints: latency, cost, output format, safety/compliance
+- Success criteria: quality, speed, token/cost, compatibility
+- Evidence requirements: unit tests, evals, live smoke checks, rollout metrics
 
-If scope is not explicit, ask a single scope-selection question and wait.
+Scope not explicit → ask once, wait.
 
 ## Workflow
 
-### Phase 0: Scope and coordination lock
+### Phase 0: Scope lock
 
-Define exactly what will be migrated:
+Define exactly what will be migrated. Narrow down to a targeted section. Establish current state.
 
-- Entire repository
-- Specific directories
-- Specific file list
-
-Also establish the current implementation state:
-
-- Inspect version control status, branch/PR context, issue notes, migration plans,
-  and local handoff files when available.
-- Separate changes already implemented from changes still needed.
-- Identify work that appears unrelated, incomplete, or owned by another agent
-  before editing nearby files.
-
-Do not edit code until scope is confirmed and the current work state is understood.
+- Inspect VCS status, branch/PR context, issue notes, migration plans,
+  handoff files.
+- Separate: done vs. needs-validation vs. in-progress vs. not-started.
+- Identify work that appears unrelated, incomplete, or owned by another agent.
+- Do not edit until scope is confirmed, targeted, and current state is understood.
 
 ### Phase 1: Discovery scan
 
 Map the migration surface:
 
-- API call sites (SDK/client usage, model IDs, request params)
-- Prompt assets (system prompts, templates, chains)
-- Agent configs (tool policy, autonomy/delegation behavior)
-- Tool definitions (schemas, descriptions, guardrails)
+- API call sites: SDK/client usage, model IDs, request params
+- Prompt assets: system prompts, templates, chains
+- Agent configs: tool policy, autonomy/delegation behavior
+- Tool definitions: schemas, descriptions, guardrails
 - Registries/config/tests/docs referencing model names
 
 Read:
 
 - `references/migration-playbook.md`
 - `references/provider-checklists.md`
-- `references/prompt-template-research.md` when creating or improving a
-  migration prompt, prompt rewrite process, or reusable migration request.
-- `references/migration-patterns.md` when choosing rollout strategy,
-  compatibility adapters, feature flags, or side-by-side support.
-- `references/validation-proof.md` when planning proof gates, evals,
-  smoke tests, or diagnose-patch-retry loops.
+- `references/prompt-template-research.md` — when creating or improving a
+  migration prompt or reusable migration request
+- `references/migration-patterns.md` — when choosing rollout strategy,
+  adapters, feature flags, or side-by-side support
+- `references/validation-proof.md` — when planning proof gates, evals,
+  smoke tests, or diagnose-patch-retry loops
 
-### Phase 2: File classification
+### Phase 2: Classify before editing
 
-Classify each hit before editing:
+Classify each hit:
 
-- **Runtime caller**: code that sends model requests
-- **Definer/registry**: model catalogs, routing, capability maps
-- **Prompt and behavior layer**: prompt templates and safety policy
-- **Agent/tool layer**: tool specs, usage policy, orchestration hints
-- **Reference/test/docs**: assertions, docs, examples, fixtures
+- **Runtime caller** — code that sends model requests
+- **Definer/registry** — model catalogs, routing, capability maps
+- **Prompt/behavior layer** — prompt templates, safety policy
+- **Agent/tool layer** — tool specs, usage policy, orchestration hints
+- **Reference/test/docs** — assertions, docs, examples, fixtures
 
-For each category, choose the right action:
+Choose action per category:
 
 - Replace
 - Add alongside
 - Keep and annotate
-- Regenerate (if generated files)
+- Regenerate (generated files only)
 
 ### Phase 3: Migration design
 
-Create a compact migration spec:
+Thoroughly plan and research before implementation starts. Compact migration spec:
 
-- What appears already implemented and by whom if known
-- What remains to be implemented
-- Which migration pattern applies, such as direct swap, branch-by-abstraction,
-  strangler-style routing, expand-contract, shadow mode, or canary rollout
-- What is required to prevent breakage
-- What is optional tuning for better performance
-- Validation plan (tests + runtime checks + regression checks + proof evidence)
+- What is already implemented (by whom, if known)
+- What remains
+- Which pattern: direct swap, branch-by-abstraction, strangler routing,
+  expand-contract, shadow mode, canary rollout
+- Breakdown of iterative phases for implementation
+- Required to prevent breakage
+- Optional tuning for better performance
+- Validation plan: tests + runtime checks + regression checks + proof
 - Rollback strategy
 
-If provider-specific unknowns exist, flag them and ask before risky edits.
+Provider-specific unknowns → flag and ask before risky edits.
+Do not start Phase 4 until this design is complete and phase boundaries are clear.
 
 ### Phase 4: Implementation
 
-Apply changes in this order:
+Apply in order:
 
 1. Runtime/API compatibility edits
 2. Prompt and behavior tuning
 3. Agent and tool behavior updates
 4. Config, registry, tests, docs synchronization
 
-Use precise edits. Avoid repo-wide blind search-and-replace.
+Precise edits only. No repo-wide blind search-and-replace.
 
 ### Phase 5: Validation
 
 Run:
 
-- Unit/integration tests relevant to modified files
+- Unit/integration tests for modified files
 - Lint/type-check where applicable
-- At least one real request smoke test on the destination model
+- At least one real smoke test on destination model
 - Output-contract or prompt-eval checks when prompts/parsers changed
 
 Verify:
 
 - Request success (no parameter/model errors)
 - Expected stop/finish behavior
-- Tool invocation behavior still aligned
-- Output shape/format requirements still satisfied
-- Observability signals are defined for staged rollout when production risk exists
+- Tool invocation still aligned
+- Output shape/format still satisfied
+- Observability signals defined for staged rollout when production risk exists
 
-If validation fails, enter a diagnose-patch-retry loop. Identify the observed
-root cause, patch the smallest responsible surface, then re-run the failed
-check before claiming completion.
+Failure → diagnose root cause → patch smallest responsible surface → retry
+failed check before claiming completion.
 
-### Phase 6: Migration report
+### Phase 6: Report
 
-Return a concise report with:
-
-- Scope migrated
-- Existing work found
-- Required changes made
-- Remaining work, if any
-- Optional improvements applied
-- Validation results
-- Proof evidence and commands or checks run
-- Risks and recommended next steps
-
-Use the format in `examples/example-output.md`.
-
-## Required Output Format (Caveman Style)
-
-To minimize token usage and latency during complex migrations, you MUST use the hyper-concise "caveman" style.
-
-- No conversational filler, no pleasantries, no intro/outro.
-- Use ultra-dense bullet points.
-- Provide only actionable diffs and hard validation evidence.
-
-Produce a report with these sections, strictly adhering to caveman mode:
+Hyper-concise report. These sections, nothing else:
 
 1. Migration Summary
 2. Scope and Files Changed
@@ -191,38 +200,39 @@ Produce a report with these sections, strictly adhering to caveman mode:
 8. Risks and Follow-up Recommendations
 9. Rollback Notes
 
-## Anti-Patterns to Avoid
+Format per `examples/example-output.md`.
+
+## Anti-Patterns
 
 - Blind global model-ID replacement
 - Guessing model IDs, parameters, pricing, limits, or deprecation dates
 - Editing generated files manually instead of regenerating
 - Treating registry/definer files like runtime callers
 - Overwriting another agent's partial implementation without checking intent
-- Mixing mandatory compatibility fixes with optional tuning without labeling
-- Skipping validation and claiming migration complete
-- Treating a synthetic test written during migration as proof without a real
-  smoke check, eval, trace, or before/after comparison
+- Mixing required fixes with optional tuning without labeling
+- Skipping validation and claiming complete
+- Treating a synthetic test as proof without a real smoke check, eval, trace,
+  or before/after comparison
 
-## References and Examples
+## References
 
-- Migration strategy and decision framework: `references/migration-playbook.md`
-- Provider-specific checklists: `references/provider-checklists.md`
-- Starter migration prompt and prompt-design research:
-  `templates/migration-starter-prompt.md` and
-  `references/prompt-template-research.md`
-- Migration patterns and rollout strategy: `references/migration-patterns.md`
+- Migration strategy: `references/migration-playbook.md`
+- Provider checklists: `references/provider-checklists.md`
+- Prompt design research: `references/prompt-template-research.md`
+- Migration patterns: `references/migration-patterns.md`
 - Validation proof gates: `references/validation-proof.md`
-- Example user prompts: `examples/example-prompts.md`
-- Example migration report: `examples/example-output.md`
+- Starter prompt: `templates/migration-starter-prompt.md`
+- Example prompts: `examples/example-prompts.md`
+- Example report: `examples/example-output.md`
 
 ## Validation Checklist
 
-- [ ] Scope was explicitly confirmed
-- [ ] Existing or parallel agent work was checked and summarized
-- [ ] Discovery scan covered API, prompts, agents, tools, tests, and docs
-- [ ] Files were classified before edits
-- [ ] Required compatibility fixes were applied
-- [ ] Optional tuning was clearly marked as optional
-- [ ] Tests and smoke checks were executed
-- [ ] Proof evidence was captured or skipped with a stated reason
-- [ ] Migration report was returned in required format
+- [ ] Scope explicitly confirmed
+- [ ] Existing/parallel agent work checked and summarized
+- [ ] Discovery scan covered API, prompts, agents, tools, tests, docs
+- [ ] Files classified before edits
+- [ ] Required compatibility fixes applied
+- [ ] Optional tuning clearly marked as optional
+- [ ] Tests and smoke checks executed
+- [ ] Proof evidence captured or gap stated
+- [ ] Report returned in concise format

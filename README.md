@@ -1,6 +1,6 @@
 # ModelPort
 
-[![CI](https://github.com/forkxp/migration-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/forkxp/migration-skill/actions/workflows/ci.yml)
+[![CI](https://github.com/forkadarshp/MPort/actions/workflows/ci.yml/badge.svg)](https://github.com/forkadarshp/MPort/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Codex Skill](https://img.shields.io/badge/Codex-Skill-111827)](SKILL.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
@@ -28,8 +28,8 @@ An AI agent skill for safe, production-grade LLM model migrations. Automate beha
 Clone:
 
 ```bash
-git clone https://github.com/forkxp/migration-skill.git
-cd migration-skill
+git clone https://github.com/forkadarshp/MPort.git
+cd MPort
 ```
 
 Install as a local Codex skill with a symlink:

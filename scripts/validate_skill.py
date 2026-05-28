@@ -17,7 +17,7 @@ REQUIRED_PATHS = [
     "references/prompt-template-research.md",
     "references/provider-checklists.md",
     "references/validation-proof.md",
-    "references/caveman-style.md",
+    "references/output-style.md",
     "templates/migration-starter-prompt.md",
     "examples/example-prompts.md",
     "examples/example-output.md",
