@@ -1,0 +1,13 @@
+.DS_Store
+*.log
+*.tmp
+.idea/
+.vscode/
+node_modules/
+dist/
+coverage/
+__pycache__/
+*.pyc
+*.egg-info/
+.env
+.gemini/

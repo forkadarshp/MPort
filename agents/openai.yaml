@@ -1,0 +1,4 @@
+interface:
+  display_name: "ModelPort"
+  short_description: "Migrate prompts, agents, and LLM code safely"
+  default_prompt: "Use $modelport-skill and the starter prompt template to migrate this codebase from the current model to the newer target model with validation evidence and rollback notes."
