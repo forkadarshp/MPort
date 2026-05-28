@@ -15,6 +15,68 @@ An AI agent skill for safe, production-grade LLM model migrations. Automate beha
 **The Problem:** Most model migrations fail after you change the model ID because search-and-replace breaks tool calling, parser behavior, and orchestration.  
 **The Solution:** ModelPort treats migration as a behavior-preservation problem: it maps callers, separates required compatibility fixes from optional tuning, and mandates validation before finishing.
 
+## Now shipping: Claude Opus 4.8 (released 2026-05-28)
+
+Opus 4.8 is live, and ModelPort already ships a dedicated migration guide for it:
+[`references/models/claude-opus-4-8.md`](references/models/claude-opus-4-8.md).
+It covers the **4.7 → 4.8 drop-in path**, the **4.6 → 4.7 breaking changes you
+must apply first** (non-default sampling params now 400, manual extended
+thinking → `{type: "adaptive"}` + `effort`, new tokenizer, removed assistant
+prefills), and **effort re-baselining**. Point the skill at your repo:
+
+```text
+Use $modelport-skill to migrate this codebase to claude-opus-4-8.
+Apply required compatibility fixes first, keep tool + output behavior stable,
+and return validation evidence plus rollback notes.
+```
+
+## Our approach to migration
+
+ModelPort treats a model swap as a **behavior-preservation problem**, not a
+search-and-replace. The model ID is one line; the behavior around it — tool
+calls, parsers, output contracts, prompts, orchestration — is everything else.
+The skill drives a strict, phase-gated pipeline that maps every caller,
+classifies each hit before editing, keeps required fixes apart from optional
+tuning, and refuses to claim "done" without proof.
+
+```text
+╭──────────────────────────────────────────────────────────────────────╮
+│                                                                      │
+│   [ Opus 4.7 ]  ═══>  ( ModelPort )  ═══>  [ Opus 4.8 ]              │
+│   drop-in upgrade    behavior-preserving    GA · 2026-05-28          │
+│                                                                      │
+│   » phase 0   lock scope, read current state ················· [ OK ]│
+│   » phase 1   discover callers, prompts, agents, tools ······· [ OK ]│
+│   » phase 2   classify every hit before editing ·············· [ OK ]│
+│   » phase 3   design: required fixes vs optional tuning ······ [ OK ]│
+│   » phase 4   surgical patches, no blind search/replace ······ [ OK ]│
+│   » phase 5   validate: tests + live smoke + contract ········ [ OK ]│
+│   » phase 6   report: proof evidence + rollback notes ········ [ OK ]│
+│                                                                      │
+╰──────────────────────────────────────────────────────────────────────╯
+```
+
+## Outcomes: with vs. without ModelPort
+
+Skipping the discipline is exactly where migrations look fine in review and
+then silently regress in production — broken tool calls, drifted output
+contracts, no proof, and no way back.
+
+```text
+╭───────────────────────────────────┬───────────────────────────────────╮
+│  WITHOUT ModelPort                │  WITH ModelPort                   │
+├───────────────────────────────────┼───────────────────────────────────┤
+│   x  find/replace the model ID    │   ✓  scope-locked discovery       │
+│   x  tool calls break silently    │   ✓  callers mapped, not guessed  │
+│   x  parser / output drift        │   ✓  output contract preserved    │
+│   x  prompt hacks carry over      │   ✓  fixes vs tuning kept apart   │
+│   x  "looks fine" — no proof      │   ✓  tests + live smoke evidence  │
+│   x  no way back on breakage      │   ✓  rollback notes included      │
+├───────────────────────────────────┼───────────────────────────────────┤
+│   →  silent prod regressions      │   →  behavior-preserving upgrade  │
+╰───────────────────────────────────┴───────────────────────────────────╯
+```
+
 ## Why teams use it
 
 - Replace deprecated model IDs without breaking runtime calls.
@@ -146,9 +208,15 @@ See [examples/example-output.md](examples/example-output.md) for a sample report
 ├── references/
 │   ├── migration-patterns.md
 │   ├── migration-playbook.md
+│   ├── output-style.md
 │   ├── prompt-template-research.md
 │   ├── provider-checklists.md
-│   └── validation-proof.md
+│   ├── validation-proof.md
+│   └── models/
+│       ├── claude-opus-4-8.md
+│       ├── claude-opus-4-6.md
+│       ├── claude-sonnet-4-5.md
+│       └── gpt-5-5.md
 ├── examples/
 │   ├── example-prompts.md
 │   └── example-output.md
@@ -180,8 +248,8 @@ npx markdownlint-cli2 "**/*.md"
 
 ## Roadmap
 
-- Add provider-specific deep dives for OpenAI, Anthropic, Gemini, and
-  self-hosted models.
+- Per-model migration guides for Claude Opus 4.8 / 4.6, Sonnet 4.5, and GPT-5.5
+  ship today in `references/models/`. Next: Gemini and self-hosted models.
 - Add regression fixtures for prompt, tool, and structured-output migrations.
 - Add benchmark examples for latency, token usage, and output contract drift.
 - Add real-world before/after migration case studies.
