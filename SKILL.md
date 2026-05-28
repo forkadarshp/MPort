@@ -1,6 +1,6 @@
 ---
 name: modelport-skill
-description: Use when the user asks to migrate, upgrade, or port prompts, agents, tools, or codebases from one LLM model or provider version to another. Also use when auditing or continuing migration work started by another agent. Covers API calls, prompt assets, agent configs, tool definitions, tests, docs, runtime settings, rollout plans, and handoff coordination.
+description: Use when the user asks to migrate, upgrade, or port prompts, agents, tools, or codebases from one LLM model or provider version to another. Also use when auditing or continuing migration work started by another agent. Covers API calls, prompt assets, agent configs, tool definitions, tests, docs, runtime settings, rollout plans, and handoff coordination. Can also benchmark pre/post migration systems (old model and prompts vs new model and enhanced system) and report the stats as evidence.
 ---
 
 # ModelPort Skill
@@ -85,10 +85,16 @@ Collect before editing:
 - Constraints: latency, cost, output format, safety/compliance
 - Success criteria: quality, speed, token/cost, compatibility
 - Evidence requirements: unit tests, evals, live smoke checks, rollout metrics
+- Benchmark report: does the user want pre/post benchmark stats in the final
+  report (baseline old/old vs new/enhanced, plus the raw-swap control)? Opt-in.
+  Ask once, up front — capturing the baseline later is impossible.
 
 If source or target matches a model with a dedicated guide in
 `references/models/`, read that guide before proceeding. Model guides contain
 changelogs, breaking changes, migration steps, and version-specific quirks.
+
+If benchmarking is requested, read `references/benchmarking.md` and capture the
+baseline (Arm A) in Phase 0 before any edit — it cannot be reconstructed later.
 
 Scope not explicit → ask once, wait.
 
@@ -103,6 +109,8 @@ Define exactly what will be migrated. Narrow down to a targeted section. Establi
 - Separate: done vs. needs-validation vs. in-progress vs. not-started.
 - Identify work that appears unrelated, incomplete, or owned by another agent.
 - Do not edit until scope is confirmed, targeted, and current state is understood.
+- Benchmarking opted in → capture **Arm A** (baseline: old model + old prompts)
+  on the eval set now, before any edit. See `references/benchmarking.md`.
 
 ### Phase 1: Discovery scan
 
@@ -127,6 +135,8 @@ Read:
   adapters, feature flags, or side-by-side support
 - `references/validation-proof.md` — when planning proof gates, evals,
   smoke tests, or diagnose-patch-retry loops
+- `references/benchmarking.md` — when the user opted into a pre/post benchmark
+  (three-arm methodology, metrics, composite scoring, leaderboard format)
 
 ### Phase 2: Classify before editing
 
@@ -173,6 +183,10 @@ Apply in order:
 
 Precise edits only. No repo-wide blind search-and-replace.
 
+Benchmarking opted in → after step 1 (runtime edits) and before step 2 (prompt
+tuning), capture **Arm B** (naive swap: new model + old prompts). This is the
+honest control for the raw model delta.
+
 ### Phase 5: Validation
 
 Run:
@@ -190,6 +204,10 @@ Verify:
 - Output shape/format still satisfied
 - Observability signals defined for staged rollout when production risk exists
 
+Benchmarking opted in → capture **Arm C** (new model + enhanced system) on the
+same eval set, then compile the three-arm leaderboard and attribution (model
+delta B−A, skill delta C−B, net C−A) per `references/benchmarking.md`.
+
 Failure → diagnose root cause → patch smallest responsible surface → retry
 failed check before claiming completion.
 
@@ -206,6 +224,8 @@ Hyper-concise report. These sections, nothing else:
 7. Proof Evidence
 8. Risks and Follow-up Recommendations
 9. Rollback Notes
+10. Benchmark Results — only if benchmarking was requested. Three-arm
+    leaderboard + attribution. Mark sample/illustrative numbers as such.
 
 Format per `examples/example-output.md`.
 
@@ -220,6 +240,9 @@ Format per `examples/example-output.md`.
 - Skipping validation and claiming complete
 - Treating a synthetic test as proof without a real smoke check, eval, trace,
   or before/after comparison
+- Benchmarking arms on different eval sets, settings, or cache states
+- Presenting illustrative/sample benchmark numbers as measured results
+- Skipping the Arm A baseline capture, then editing — it cannot be recovered
 
 ## References
 
@@ -230,6 +253,7 @@ Format per `examples/example-output.md`.
 - Prompt design research: `references/prompt-template-research.md`
 - Migration patterns: `references/migration-patterns.md`
 - Validation proof gates: `references/validation-proof.md`
+- Migration benchmarking: `references/benchmarking.md` (optional pre/post stats)
 - Starter prompt: `templates/migration-starter-prompt.md`
 - Example prompts: `examples/example-prompts.md`
 - Example report: `examples/example-output.md`
@@ -244,4 +268,5 @@ Format per `examples/example-output.md`.
 - [ ] Optional tuning clearly marked as optional
 - [ ] Tests and smoke checks executed
 - [ ] Proof evidence captured or gap stated
+- [ ] Benchmark opt-in asked; if yes, three arms captured and reported
 - [ ] Report returned in concise format
