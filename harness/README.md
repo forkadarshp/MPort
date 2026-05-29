@@ -88,5 +88,7 @@ Copy `scenarios/support_triage.json` and edit:
 - `iterate.py` — prompt-optimization sweep (score trajectory across revisions)
 - `graders.py` — provider-agnostic scoring (contract, tool, task)
 - `providers.py` — `SimProvider` (offline) + `AnthropicProvider` (real)
-- `scenarios/` — scenario fixtures
+- `scenarios/` — fixtures: `support_triage` (contract-focused, plateaus ~93%)
+  and `ops_routing` (harder multi-tool routing, plateaus ~79% — several
+  compound/ambiguous cases prompting can't fix). Add `--scenario` to target one.
 - `tests/` — `python3 -m unittest discover -s tests`

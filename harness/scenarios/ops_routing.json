@@ -1,0 +1,39 @@
+{
+  "name": "ops-tool-routing",
+  "role": "You are an ops-assistant that routes a request to exactly one tool.",
+  "description": "Route a natural-language ops request to one of six tools with the right multi-field args, and return strict JSON. Harder than triage: more tools (more ways to mis-route), multi-arg calls, and several compound/ambiguous cases that prompting alone can't fully resolve.",
+  "models": { "old": "claude-opus-4-6", "new": "claude-opus-4-8" },
+  "categories": ["deploy", "reliability", "observability", "incident", "other"],
+  "tools": [
+    { "name": "restart_service", "args": ["service"] },
+    { "name": "scale_service", "args": ["service", "replicas"] },
+    { "name": "rollback_deploy", "args": ["service", "version"] },
+    { "name": "fetch_logs", "args": ["service"] },
+    { "name": "create_incident", "args": ["service", "severity"] },
+    { "name": "none", "args": [] }
+  ],
+  "prompts": {
+    "baseline": "You are an ops assistant. Read the request and decide how to handle it. Tell me the intent and which tool you'd use.",
+    "enhanced": "You are an ops-assistant that routes a request to exactly one tool. Return a JSON object with the category and the tool. Return ONLY the JSON object. Follow this schema: {category, tool, args}. Tools: restart_service, scale_service, rollback_deploy, fetch_logs, create_incident, none. No prose. Do not wrap it in code fences. Extract any IDs, names, versions, or emails into args. Choose exactly one category and exactly one tool. Use lowercase values exactly as listed. (Tuned via iterate.py — iteration 9, the pre-plateau optimum.)"
+  },
+  "eval_cases": [
+    { "id": "oc01", "input": "Roll back payments-api to v1.4.2, the new deploy is erroring.", "difficulty": 0.45, "expected": { "category": "deploy", "tool": "rollback_deploy", "args": { "service": "payments-api", "version": "v1.4.2" } } },
+    { "id": "oc02", "input": "Scale the web frontend to 8 replicas, traffic is spiking.", "difficulty": 0.5, "expected": { "category": "reliability", "tool": "scale_service", "args": { "service": "web", "replicas": "8" } } },
+    { "id": "oc03", "input": "Grab the logs for the auth service, we're seeing 401s.", "difficulty": 0.4, "expected": { "category": "observability", "tool": "fetch_logs", "args": { "service": "auth" } } },
+    { "id": "oc04", "input": "Checkout is down, open a sev1 incident.", "difficulty": 0.6, "expected": { "category": "incident", "tool": "create_incident", "args": { "service": "checkout", "severity": "sev1" } } },
+    { "id": "oc05", "input": "Restart the billing-worker, it's stuck.", "difficulty": 0.35, "expected": { "category": "reliability", "tool": "restart_service", "args": { "service": "billing-worker" } } },
+    { "id": "oc06", "input": "Thanks for the help earlier!", "difficulty": 0.55, "expected": { "category": "other", "tool": "none", "args": {} } },
+    { "id": "oc07", "input": "Payments latency is climbing, not sure why yet.", "difficulty": 0.7, "expected": { "category": "observability", "tool": "fetch_logs", "args": { "service": "payments" } } },
+    { "id": "oc08", "input": "Bump search to 12 pods and roll it back if errors persist.", "difficulty": 0.96, "expected": { "category": "reliability", "tool": "scale_service", "args": { "service": "search", "replicas": "12" } } },
+    { "id": "oc09", "input": "The last release broke prod, undo it for orders-api.", "difficulty": 0.85, "expected": { "category": "deploy", "tool": "rollback_deploy", "args": { "service": "orders-api" } } },
+    { "id": "oc10", "input": "Open a sev2 incident for the notifications outage.", "difficulty": 0.65, "expected": { "category": "incident", "tool": "create_incident", "args": { "service": "notifications", "severity": "sev2" } } },
+    { "id": "oc11", "input": "Restart api-gateway and also scale it to 6.", "difficulty": 0.97, "expected": { "category": "reliability", "tool": "restart_service", "args": { "service": "api-gateway" } } },
+    { "id": "oc12", "input": "Show me logs from the cdn edge nodes.", "difficulty": 0.78, "expected": { "category": "observability", "tool": "fetch_logs", "args": { "service": "cdn" } } },
+    { "id": "oc13", "input": "Everything is on fire, prod is down across the board.", "difficulty": 0.92, "expected": { "category": "incident", "tool": "create_incident", "args": { "service": "platform", "severity": "sev1" } } },
+    { "id": "oc14", "input": "Can you make the app faster?", "difficulty": 0.99, "expected": { "category": "other", "tool": "none", "args": {} } }
+  ],
+  "sim": {
+    "claude-opus-4-6": { "literalness": 0.5, "base": 0.66, "latency_ms": 3800, "price_in": 0.000005, "price_out": 0.000025 },
+    "claude-opus-4-8": { "literalness": 0.9, "base": 0.70, "latency_ms": 2300, "price_in": 0.000005, "price_out": 0.000025 }
+  }
+}
