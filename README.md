@@ -144,6 +144,13 @@ particular move with the target model and are always reported as measured, never
 assumed. Methodology, metric definitions, and composite scoring live in
 [references/benchmarking.md](references/benchmarking.md).
 
+**Run it yourself.** A bundled harness turns this into a closed loop:
+`python3 harness/run.py` scores the three arms on an eval set, and
+`harness/iterate.py` sweeps prompt revisions so you watch the score climb until
+it plateaus. Two scenarios ship (support triage + multi-tool routing); it runs
+offline by default, or `--provider anthropic` for measured numbers. See
+[harness/README.md](harness/README.md).
+
 ## Why ModelPort
 
 - Replace deprecated model IDs without breaking runtime calls.
