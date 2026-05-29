@@ -11,7 +11,7 @@
   ],
   "prompts": {
     "baseline": "You are a helpful support assistant. Read the customer ticket and decide how to handle it. Tell me the category and whether a tool is needed.",
-    "enhanced": "You are a support-triage assistant. Return ONLY a JSON object and no prose. Schema: {\"category\": one of billing|technical|account|other, \"tool\": one of lookup_order|issue_refund|reset_password|none, \"args\": object}. Do not wrap the JSON in code fences or commentary. Choose exactly one category and exactly one tool from the lists above."
+    "enhanced": "You are a support-triage assistant. Return ONLY a JSON object and no prose. Schema: {\"category\": one of billing|technical|account|other, \"tool\": one of lookup_order|issue_refund|reset_password|none, \"args\": object}. Do not wrap the JSON in code fences or commentary. Extract any order_id or email into args. Choose exactly one category and exactly one tool from the lists above. (Tuned via iterate.py — iteration 8, the pre-plateau optimum.)"
   },
   "eval_cases": [
     { "id": "c01", "input": "I was charged twice for order 4471, please refund one.", "difficulty": 0.15, "expected": { "category": "billing", "tool": "issue_refund", "args": { "order_id": "4471" } } },
