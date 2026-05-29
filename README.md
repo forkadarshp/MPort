@@ -69,6 +69,20 @@ tuning, and refuses to claim "done" without proof.
 ╰──────────────────────────────────────────────────────────────────────╯
 ```
 
+## More than a model-ID swap
+
+ModelPort doesn't just rewrite `model="..."`. It updates prompts, tool
+descriptions, and guardrails to match how the **target model actually behaves** —
+including the undocumented quirks that never make the changelog.
+
+Take chess: GPT-3.5 played badly, GPT-4o was a leap ahead — not from a rules
+change, but because 4o's training data held far more chess games. That kind of
+capability shift never appears in the release notes. ModelPort's research
+surfaces these advertised *and* unadvertised behaviors — from observed runs,
+prior migrations, web research, and provider changelogs — and folds the matching
+prompt and tooling changes into the migration, so the new model is actually used
+to its strengths instead of just dropped in.
+
 ## Outcomes: with vs. without ModelPort
 
 Skipping the discipline is exactly where migrations look fine in review and
@@ -331,8 +345,11 @@ adaptive thinking, tokenizer, removed prefills).
 
 Often, yes — and that's the problem ModelPort exists to solve. Newer models
 follow instructions more literally and re-tokenize differently, so a raw
-find/replace can silently break tool calls and parsers. ModelPort treats the
-swap as behavior preservation and validates the contract before finishing.
+find/replace can silently break tool calls and parsers. ModelPort goes beyond
+the model ID: it updates prompts, tool descriptions, and guardrails to match the
+target model's actual behavior — researched from observed runs, web research,
+and provider changelogs, including unadvertised quirks — then validates the
+contract before finishing.
 
 ### How do I benchmark Opus 4.8 against my current model?
 
