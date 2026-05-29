@@ -8,11 +8,11 @@
 
 ![ModelPort social preview](assets/social-preview.svg)
 
-**Production-grade LLM migrations: Swap models safely across agents, prompts, and code.**
+**Ship model upgrades without breaking prod.**
 
-An AI agent skill for safe, production-grade LLM model migrations. Automate behavior-preserving upgrades across prompts, agents, API callers, and tests. Universal and plug-and-play across Codex, Claude Code, Cursor, and more.
+Agent-native, drop-in, behavior-preserving LLM migrations — across prompts, agents, tools, API callers, and tests. One skill, works in Claude Code, Codex, and Cursor.
 
-> **Install in one line:** `npx skills add forkadarshp/MPort` — then tell your agent to migrate. See [Quick start](#quick-start).
+> **Install in one line:** `npx skills add forkadarshp/MPort` — then tell your agent to migrate. See [Quickstart](#quickstart).
 
 **The model ID is one line. The behavior around it is everything else.**
 Most migrations break because search-and-replace silently shatters tool calling,
@@ -27,6 +27,8 @@ parsers, and orchestration. ModelPort treats a swap as behavior preservation:
   > migrate this repo to claude-opus-4-8, keep behavior, prove it
   ✓ callers mapped        ✓ contract held       ✓ tests + rollback evidence
 ```
+
+> **Star it** if it's saved you a migration headache — it helps other teams find it.
 
 ## Now shipping: Claude Opus 4.8 (released 2026-05-28)
 
@@ -43,7 +45,7 @@ Apply required compatibility fixes first, keep tool + output behavior stable,
 and return validation evidence plus rollback notes.
 ```
 
-## Our approach to migration
+## How it works
 
 ModelPort treats a model swap as a **behavior-preservation problem**, not a
 search-and-replace. The model ID is one line; the behavior around it — tool
@@ -68,6 +70,20 @@ tuning, and refuses to claim "done" without proof.
 │                                                                      │
 ╰──────────────────────────────────────────────────────────────────────╯
 ```
+
+## More than a model-ID swap
+
+ModelPort doesn't just rewrite `model="..."`. It updates prompts, tool
+descriptions, and guardrails to match how the **target model actually behaves** —
+including the undocumented quirks that never make the changelog.
+
+Take chess: GPT-3.5 played badly, GPT-4o was a leap ahead — not from a rules
+change, but because 4o's training data held far more chess games. That kind of
+capability shift never appears in the release notes. ModelPort's research
+surfaces these advertised *and* unadvertised behaviors — from observed runs,
+prior migrations, web research, and provider changelogs — and folds the matching
+prompt and tooling changes into the migration, so the new model is actually used
+to its strengths instead of just dropped in.
 
 ## Outcomes: with vs. without ModelPort
 
@@ -127,7 +143,7 @@ particular move with the target model and are always reported as measured, never
 assumed. Methodology, metric definitions, and composite scoring live in
 [references/benchmarking.md](references/benchmarking.md).
 
-## Why teams use it
+## Why ModelPort
 
 - Replace deprecated model IDs without breaking runtime calls.
 - Preserve output contracts, parser behavior, and tool calling.
@@ -136,9 +152,9 @@ assumed. Methodology, metric definitions, and composite scoring live in
 - Produce validation evidence and rollback notes.
 - Benchmark pre vs. post (and raw-swap control) to quantify the upgrade.
 
-## Quick start
+## Quickstart
 
-Install ModelPort globally for all compatible AI agents (Codex, Claude Code, Cursor, etc.) using the universal skills CLI:
+Install once, use everywhere — the universal skills CLI wires ModelPort into Codex, Claude Code, Cursor, and more:
 
 ```bash
 npx skills add forkadarshp/MPort
@@ -187,7 +203,7 @@ rollback notes.
 For detailed migration requests, start from
 [templates/migration-starter-prompt.md](templates/migration-starter-prompt.md).
 
-## What it helps migrate
+## What it migrates
 
 | Area | Migration support |
 | --- | --- |
@@ -331,8 +347,11 @@ adaptive thinking, tokenizer, removed prefills).
 
 Often, yes — and that's the problem ModelPort exists to solve. Newer models
 follow instructions more literally and re-tokenize differently, so a raw
-find/replace can silently break tool calls and parsers. ModelPort treats the
-swap as behavior preservation and validates the contract before finishing.
+find/replace can silently break tool calls and parsers. ModelPort goes beyond
+the model ID: it updates prompts, tool descriptions, and guardrails to match the
+target model's actual behavior — researched from observed runs, web research,
+and provider changelogs, including unadvertised quirks — then validates the
+contract before finishing.
 
 ### How do I benchmark Opus 4.8 against my current model?
 
