@@ -31,15 +31,25 @@ def _clamp(x: float, lo: float = 0.02, hi: float = 0.95) -> float:
 
 
 def explicitness(prompt: str, scenario: dict) -> dict:
-    """Score how precisely a prompt specifies the output contract and tools."""
+    """Score how precisely a prompt specifies the output contract and tools.
+
+    The marker sets are intentionally granular so there is a long, realistic
+    prompt-optimization path (see iterate.py): each technique a revision adds
+    raises fidelity a little, until the prompt levers are exhausted and the
+    score plateaus (the remaining failures need more than prompting).
+    """
     p = prompt.lower()
-    contract_markers = ["only", "json", "schema", "no prose", "do not wrap"]
+    contract_markers = [
+        "json", "only", "schema", "no prose", "do not wrap",
+        "exactly one", "lowercase", "example",
+    ]
     c = sum(m in p for m in contract_markers) / len(contract_markers)
 
     tool_names = [t["name"] for t in scenario["tools"] if t["name"] != "none"]
     enum = sum(name in p for name in tool_names) / max(1, len(tool_names))
     args_marker = 1.0 if "args" in p else 0.0
-    tool_e = 0.6 * enum + 0.4 * args_marker
+    extract_marker = 1.0 if "extract" in p else 0.0
+    tool_e = 0.6 * enum + 0.2 * args_marker + 0.2 * extract_marker
 
     return {"contract": c, "tool": tool_e, "task": (c + tool_e) / 2}
 
