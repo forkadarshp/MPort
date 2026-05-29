@@ -168,10 +168,10 @@ Install once, use everywhere — the universal skills CLI wires ModelPort into C
 npx skills add forkadarshp/MPort
 ```
 
-*Alternatively, if you use multiple agents on the same machine:*
+*Installing for every agent on your machine? Add `--agent '*'`:*
 
 ```bash
-npx agent-skills-cli add forkadarshp/MPort
+npx skills add forkadarshp/MPort --agent '*'
 ```
 
 ### Manual Installation (Advanced)
