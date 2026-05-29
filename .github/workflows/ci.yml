@@ -22,3 +22,6 @@ jobs:
         uses: DavidAnson/markdownlint-cli2-action@v17
         with:
           globs: "**/*.md"
+      - name: Test benchmark harness
+        working-directory: harness
+        run: python3 -m unittest discover -s tests -v

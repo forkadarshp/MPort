@@ -17,3 +17,6 @@ transcript.md
 
 # Internal launch/growth notes (not part of the published skill)
 LAUNCH_PREP.md
+
+# Benchmark harness run output
+harness/results.json
