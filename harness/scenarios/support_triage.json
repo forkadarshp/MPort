@@ -1,0 +1,36 @@
+{
+  "name": "support-ticket-triage",
+  "description": "Classify a support ticket, optionally call one tool, and return a strict JSON object. Exercises output-contract conformance and tool-calling accuracy across a model migration.",
+  "models": { "old": "claude-opus-4-6", "new": "claude-opus-4-8" },
+  "categories": ["billing", "technical", "account", "other"],
+  "tools": [
+    { "name": "lookup_order", "args": ["order_id"] },
+    { "name": "issue_refund", "args": ["order_id"] },
+    { "name": "reset_password", "args": ["email"] },
+    { "name": "none", "args": [] }
+  ],
+  "prompts": {
+    "baseline": "You are a helpful support assistant. Read the customer ticket and decide how to handle it. Tell me the category and whether a tool is needed.",
+    "enhanced": "You are a support-triage assistant. Return ONLY a JSON object and no prose. Schema: {\"category\": one of billing|technical|account|other, \"tool\": one of lookup_order|issue_refund|reset_password|none, \"args\": object}. Do not wrap the JSON in code fences or commentary. Choose exactly one category and exactly one tool from the lists above."
+  },
+  "eval_cases": [
+    { "id": "c01", "input": "I was charged twice for order 4471, please refund one.", "difficulty": 0.15, "expected": { "category": "billing", "tool": "issue_refund", "args": { "order_id": "4471" } } },
+    { "id": "c02", "input": "I forgot my password and can't log in. Email is sam@acme.io", "difficulty": 0.2, "expected": { "category": "account", "tool": "reset_password", "args": { "email": "sam@acme.io" } } },
+    { "id": "c03", "input": "Where is my package for order 9920?", "difficulty": 0.3, "expected": { "category": "other", "tool": "lookup_order", "args": { "order_id": "9920" } } },
+    { "id": "c04", "input": "The checkout page throws a 500 error when I click pay.", "difficulty": 0.45, "expected": { "category": "technical", "tool": "none", "args": {} } },
+    { "id": "c05", "input": "Refund my duplicate charge on order 1203.", "difficulty": 0.25, "expected": { "category": "billing", "tool": "issue_refund", "args": { "order_id": "1203" } } },
+    { "id": "c06", "input": "Can you check the status of order 5560?", "difficulty": 0.4, "expected": { "category": "other", "tool": "lookup_order", "args": { "order_id": "5560" } } },
+    { "id": "c07", "input": "My account is locked after too many login attempts; reset for jo@x.com", "difficulty": 0.55, "expected": { "category": "account", "tool": "reset_password", "args": { "email": "jo@x.com" } } },
+    { "id": "c08", "input": "The mobile app crashes on startup since the update.", "difficulty": 0.6, "expected": { "category": "technical", "tool": "none", "args": {} } },
+    { "id": "c09", "input": "I think I was overcharged but I'm not sure, can you look at order 7781?", "difficulty": 0.7, "expected": { "category": "billing", "tool": "lookup_order", "args": { "order_id": "7781" } } },
+    { "id": "c10", "input": "Just wanted to say your support team is great!", "difficulty": 0.5, "expected": { "category": "other", "tool": "none", "args": {} } },
+    { "id": "c11", "input": "Password reset link expired, send a new one to me@dev.io please", "difficulty": 0.8, "expected": { "category": "account", "tool": "reset_password", "args": { "email": "me@dev.io" } } },
+    { "id": "c12", "input": "Payment failed three times and now I have three pending charges on order 3030.", "difficulty": 0.9, "expected": { "category": "billing", "tool": "issue_refund", "args": { "order_id": "3030" } } },
+    { "id": "c13", "input": "Charged for a subscription I cancelled (order 8800), I want a refund.", "difficulty": 0.95, "expected": { "category": "billing", "tool": "issue_refund", "args": { "order_id": "8800" } } },
+    { "id": "c14", "input": "App shows a white screen, reinstalled twice, still broken.", "difficulty": 0.97, "expected": { "category": "technical", "tool": "none", "args": {} } }
+  ],
+  "sim": {
+    "claude-opus-4-6": { "literalness": 0.5, "base": 0.72, "latency_ms": 3800, "price_in": 0.000005, "price_out": 0.000025 },
+    "claude-opus-4-8": { "literalness": 0.9, "base": 0.76, "latency_ms": 2300, "price_in": 0.000005, "price_out": 0.000025 }
+  }
+}
