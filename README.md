@@ -12,18 +12,20 @@
 
 An AI agent skill for safe, production-grade LLM model migrations. Automate behavior-preserving upgrades across prompts, agents, API callers, and tests. Universal and plug-and-play across Codex, Claude Code, Cursor, and more.
 
+> **Install in one line:** `npx skills add forkadarshp/MPort` — then tell your agent to migrate. See [Quick start](#quick-start).
+
 **The model ID is one line. The behavior around it is everything else.**
 Most migrations break because search-and-replace silently shatters tool calling,
 parsers, and orchestration. ModelPort treats a swap as behavior preservation:
 
 ```text
-  # the naive migration                       ┄ what a find/replace does
+  # the naive migration         ┄ what a find/replace does
   $ grep -rl 'opus-4-7' . | xargs sed -i 's/4-7/4-8/g'
-    x tool calls break     x parser drift     x silent prod regressions
+  x tool calls break      x parser drift        x silent prod regressions
 
-  # the ModelPort migration                   ┄ behavior-preserving
+  # the ModelPort migration     ┄ behavior-preserving
   > migrate this repo to claude-opus-4-8, keep behavior, prove it
-    ✓ callers mapped       ✓ contract held    ✓ tests + rollback evidence
+  ✓ callers mapped        ✓ contract held       ✓ tests + rollback evidence
 ```
 
 ## Now shipping: Claude Opus 4.8 (released 2026-05-28)
@@ -306,6 +308,49 @@ npx markdownlint-cli2 "**/*.md"
 - Ship a runnable benchmark harness to auto-collect the three-arm leaderboard
   (the methodology lands today in `references/benchmarking.md`).
 - Add real-world before/after migration case studies.
+
+## FAQ
+
+### How do I migrate to Claude Opus 4.8?
+
+Install ModelPort, then ask your agent: *"migrate this repo to
+`claude-opus-4-8`."* It reads the
+[Opus 4.8 guide](references/models/claude-opus-4-8.md), applies the required
+compatibility fixes, preserves tool calling and output contracts, and returns
+validation evidence plus rollback notes.
+
+### How do I migrate from Claude Opus 4.7 to 4.8?
+
+4.7 → 4.8 is a drop-in upgrade with no breaking API changes — the main task is
+re-baselining any tuned `effort` settings. ModelPort makes the model-ID change,
+flags the settings to retest, and validates that behavior is unchanged. Coming
+from 4.6 or earlier, it applies the 4.7 breaking changes first (sampling params,
+adaptive thinking, tokenizer, removed prefills).
+
+### Will changing the model ID break my tool calling or output format?
+
+Often, yes — and that's the problem ModelPort exists to solve. Newer models
+follow instructions more literally and re-tokenize differently, so a raw
+find/replace can silently break tool calls and parsers. ModelPort treats the
+swap as behavior preservation and validates the contract before finishing.
+
+### How do I benchmark Opus 4.8 against my current model?
+
+Opt into benchmarking at the start and ModelPort runs a three-arm comparison —
+baseline, naive swap, and the enhanced system — on the same eval set, then
+reports a leaderboard with quality, latency, cost, and contract metrics. See
+[references/benchmarking.md](references/benchmarking.md).
+
+### Does it work with Claude Code, Codex, and Cursor?
+
+Yes. It's a universal agent skill — install it once and invoke it from Claude
+Code, Codex, Cursor, or any compatible agent.
+
+### Which models and providers does it support?
+
+Any model or provider swap (Anthropic, OpenAI, and others). It ships dedicated
+migration guides for Claude Opus 4.8 / 4.6, Claude Sonnet 4.5, and GPT-5.5, and
+a generic playbook for everything else.
 
 ## Contributing
 

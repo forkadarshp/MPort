@@ -11,3 +11,9 @@ __pycache__/
 *.egg-info/
 .env
 .gemini/
+
+# Internal AI-agent coordination scratchpad (not part of the published skill)
+transcript.md
+
+# Internal launch/growth notes (not part of the published skill)
+LAUNCH_PREP.md
