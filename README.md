@@ -8,9 +8,9 @@
 
 ![ModelPort social preview](assets/social-preview.svg)
 
-**Ship model upgrades without breaking prod.**
+**Ship model upgrades without breaking prod — then prove it.**
 
-Agent-native, drop-in, behavior-preserving LLM migrations — across prompts, agents, tools, API callers, and tests. One skill, works in Claude Code, Codex, and Cursor.
+Two things in one agent skill: **behavior-preserving migrations** across prompts, agents, tools, API callers, and tests — and **built-in evals** that score your old vs. new system so every upgrade is backed by numbers, not vibes. Works in Claude Code, Codex, and Cursor.
 
 > **Install in one line:** `npx skills add forkadarshp/MPort` — then tell your agent to migrate. See [Quickstart](#quickstart).
 
@@ -106,11 +106,12 @@ contracts, no proof, and no way back.
 ╰───────────────────────────────────┴───────────────────────────────────╯
 ```
 
-## Benchmark your migration (optional)
+## Benchmark the upgrade — built-in evals
 
-Opt in at the start and ModelPort ends with **measured evidence, not vibes**. It
-runs the same eval set against three configurations so the raw model delta and
-the skill's added value are attributed separately:
+Migrations shouldn't be a leap of faith. Opt in and ModelPort ends with
+**measured evidence, not vibes** — it runs the same eval set against three
+configurations so the raw model delta and the skill's added value are attributed
+separately:
 
 - **Baseline** — old model + old prompts (where you started)
 - **Naive swap** — new model + old prompts (what a find/replace would get you)
