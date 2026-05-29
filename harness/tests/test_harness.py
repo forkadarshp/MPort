@@ -48,28 +48,35 @@ class TestGraders(unittest.TestCase):
 class TestSimAndLoop(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.scenario = json.loads((HARNESS / "scenarios/support_triage.json").read_text())
+        cls.scenarios = [
+            json.loads(p.read_text())
+            for p in sorted((HARNESS / "scenarios").glob("*.json"))
+        ]
+        assert len(cls.scenarios) >= 2, "expected multiple scenario fixtures"
 
     def test_enhanced_prompt_is_more_explicit(self):
-        e_base = explicitness(self.scenario["prompts"]["baseline"], self.scenario)
-        e_enh = explicitness(self.scenario["prompts"]["enhanced"], self.scenario)
-        self.assertGreater(e_enh["contract"], e_base["contract"])
-        self.assertGreater(e_enh["task"], e_base["task"])
+        for sc in self.scenarios:
+            with self.subTest(scenario=sc["name"]):
+                e_base = explicitness(sc["prompts"]["baseline"], sc)
+                e_enh = explicitness(sc["prompts"]["enhanced"], sc)
+                self.assertGreater(e_enh["contract"], e_base["contract"])
+                self.assertGreater(e_enh["task"], e_base["task"])
 
     def test_modelport_arm_beats_baseline(self):
-        sc = self.scenario
-        prov = SimProvider(sc)
-        old, new = sc["models"]["old"], sc["models"]["new"]
-        arms = [
-            run.run_arm(prov, old, sc["prompts"]["baseline"], sc, sc["sim"][old]),
-            run.run_arm(prov, new, sc["prompts"]["baseline"], sc, sc["sim"][new]),
-            run.run_arm(prov, new, sc["prompts"]["enhanced"], sc, sc["sim"][new]),
-        ]
-        comp = run.composite(arms)
-        # enhanced arm should win on quality and on the composite
-        self.assertGreater(arms[2]["task"], arms[0]["task"])
-        self.assertGreater(comp[2], comp[0])
-        self.assertGreater(comp[2], comp[1])
+        for sc in self.scenarios:
+            with self.subTest(scenario=sc["name"]):
+                prov = SimProvider(sc)
+                old, new = sc["models"]["old"], sc["models"]["new"]
+                arms = [
+                    run.run_arm(prov, old, sc["prompts"]["baseline"], sc, sc["sim"][old]),
+                    run.run_arm(prov, new, sc["prompts"]["baseline"], sc, sc["sim"][new]),
+                    run.run_arm(prov, new, sc["prompts"]["enhanced"], sc, sc["sim"][new]),
+                ]
+                comp = run.composite(arms)
+                # enhanced arm should win on quality and on the composite
+                self.assertGreater(arms[2]["task"], arms[0]["task"])
+                self.assertGreater(comp[2], comp[0])
+                self.assertGreater(comp[2], comp[1])
 
 
 if __name__ == "__main__":

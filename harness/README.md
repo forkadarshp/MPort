@@ -22,6 +22,9 @@ python3 run.py --provider sim
 
 # real measured numbers — needs ANTHROPIC_API_KEY and `pip install anthropic`
 python3 run.py --provider anthropic
+
+# sweep a sequence of prompt revisions and watch the score trajectory
+python3 iterate.py
 ```
 
 Output: a leaderboard (task success, output-contract conformance, tool-call
@@ -40,6 +43,25 @@ This is exactly how the bundled scenario was tuned: a vague enhanced prompt
 scored a **negative** skill delta (it cost more without lifting quality); making
 the contract explicit (JSON-only, enumerated schema, no prose) moved ModelPort
 from last place to a clear win.
+
+## Automated sweep (`iterate.py`)
+
+`iterate.py` runs that loop for you — a sequence of cumulative prompt revisions,
+one technique each, with the score trajectory:
+
+```bash
+python3 iterate.py
+```
+
+On the bundled scenario the curve climbs from composite 0.64 to 0.75 over the
+first eight steps (task/contract/tool 64% → 93%, failing cases 6 → 1), then
+**plateaus**: the last two steps (lowercase rule, few-shot example) add prompt
+length and cost without lifting the capped scores, so the composite dips
+slightly. Two real takeaways the harness surfaces:
+
+- the pre-plateau step is the optimum — more prompt is not better;
+- the final failing case isn't solvable by prompting alone (it needs a fallback
+  or output validator), which is a design signal, not a prompt bug.
 
 ## Providers
 
@@ -63,7 +85,10 @@ Copy `scenarios/support_triage.json` and edit:
 ## Files
 
 - `run.py` — orchestrates the three arms, grades, prints the leaderboard
+- `iterate.py` — prompt-optimization sweep (score trajectory across revisions)
 - `graders.py` — provider-agnostic scoring (contract, tool, task)
 - `providers.py` — `SimProvider` (offline) + `AnthropicProvider` (real)
-- `scenarios/` — scenario fixtures
+- `scenarios/` — fixtures: `support_triage` (contract-focused, plateaus ~93%)
+  and `ops_routing` (harder multi-tool routing, plateaus ~79% — several
+  compound/ambiguous cases prompting can't fix). Add `--scenario` to target one.
 - `tests/` — `python3 -m unittest discover -s tests`
