@@ -34,6 +34,23 @@ python3 scripts/validate_skill.py .
 npx markdownlint-cli2 "**/*.md"
 ```
 
+## Adding or updating a model guide
+
+New models are the most valuable contribution. A guide needs:
+
+- A header with `Model ID:`, pricing, `Last verified: YYYY-MM-DD`, and
+  `Source:` (the provider page you used). Mark facts from blogs or other
+  secondary sources as such.
+- Required changes (will error), silent changes (behavior differs), upgrade
+  paths from older models, and optional tuning, kept separate.
+- An entry in `references/models/INDEX.md`, and in
+  `references/breaking-changes.md` if the model adds new errors.
+- Superseded guides get `Status: legacy` and `Last verified: legacy, ...`
+  instead of being deleted.
+
+`python3 scripts/validate_skill.py .` checks the header and the index entry.
+`python3 scripts/check_freshness.py .` lists guides older than 30 days.
+
 ## Reporting bugs
 
 Use the bug template and include:
