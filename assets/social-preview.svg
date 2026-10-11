@@ -1,31 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
   <title id="title">ModelPort</title>
-  <desc id="desc">Safe LLM upgrades for prompts, agents, and production code.</desc>
+  <desc id="desc">Upgrade to Claude Opus 5.5, GPT-6, or Gemini 3.8 without breaking prod. An agent skill that fixes the breaking changes and proves the upgrade.</desc>
   <rect width="1280" height="640" fill="#09090b"/>
-  
-  <text x="120" y="110" fill="#10b981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="24" font-weight="bold" xml:space="preserve">
+
+  <text x="120" y="96" fill="#10b981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="22" font-weight="bold" xml:space="preserve">
 <tspan x="120" dy="0">  __  __           _      _ _____           _   </tspan>
-<tspan x="120" dy="28"> |  \/  |         | |    | |  __ \         | |  </tspan>
-<tspan x="120" dy="28"> | \  / | ___   __| | ___| | |__) |__  _ __| |_ </tspan>
-<tspan x="120" dy="28"> | |\/| |/ _ \ / _` |/ _ \ |  ___/ _ \| '__| __|</tspan>
-<tspan x="120" dy="28"> | |  | | (_) | (_| |  __/ | |  | (_) | |  | |_ </tspan>
-<tspan x="120" dy="28"> |_|  |_|\___/ \__,_|\___|_|_|   \___/|_|   \__|</tspan>
+<tspan x="120" dy="26"> |  \/  |         | |    | |  __ \         | |  </tspan>
+<tspan x="120" dy="26"> | \  / | ___   __| | ___| | |__) |__  _ __| |_ </tspan>
+<tspan x="120" dy="26"> | |\/| |/ _ \ / _` |/ _ \ |  ___/ _ \| '__| __|</tspan>
+<tspan x="120" dy="26"> | |  | | (_) | (_| |  __/ | |  | (_) | |  | |_ </tspan>
+<tspan x="120" dy="26"> |_|  |_|\___/ \__,_|\___|_|_|   \___/|_|   \__|</tspan>
   </text>
 
-  <text x="120" y="320" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="20" xml:space="preserve">
-<tspan x="120" dy="0" fill="#3f3f46">+------------------------------------------------------------------------------------------+</tspan>
-<tspan x="120" dy="24" fill="#3f3f46">|                                                                                          |</tspan>
-<tspan x="120" dy="24" fill="#3f3f46">|   </tspan><tspan fill="#10b981">&gt; </tspan><tspan fill="#e4e4e7">Safe LLM upgrades for prompts, agents, and production code.                          </tspan><tspan fill="#3f3f46">|</tspan>
-<tspan x="120" dy="24" fill="#3f3f46">|                                                                                          |</tspan>
-<tspan x="120" dy="24" fill="#3f3f46">|                                                                                          |</tspan>
-<tspan x="120" dy="24" fill="#3f3f46">|   </tspan><tspan fill="#f43f5e">[ Legacy Provider ] </tspan><tspan fill="#52525b">==========&gt; </tspan><tspan fill="#0ea5e9">( ModelPort Engine ) </tspan><tspan fill="#52525b">==========&gt; </tspan><tspan fill="#10b981">[ Next-Gen Model ]    </tspan><tspan fill="#3f3f46">|</tspan>
-<tspan x="120" dy="24" fill="#3f3f46">|                                                                                          |</tspan>
-<tspan x="120" dy="24" fill="#3f3f46">|                                                                                          |</tspan>
-<tspan x="120" dy="24" fill="#3f3f46">|   </tspan><tspan fill="#10b981">&gt; </tspan><tspan fill="#a1a1aa">init migration_protocol </tspan><tspan fill="#52525b">.................................................... </tspan><tspan fill="#10b981">[ OK ]  </tspan><tspan fill="#3f3f46">|</tspan>
-<tspan x="120" dy="24" fill="#3f3f46">|   </tspan><tspan fill="#10b981">&gt; </tspan><tspan fill="#a1a1aa">mapping caller routes </tspan><tspan fill="#52525b">...................................................... </tspan><tspan fill="#10b981">[ OK ]  </tspan><tspan fill="#3f3f46">|</tspan>
-<tspan x="120" dy="24" fill="#3f3f46">|   </tspan><tspan fill="#10b981">&gt; </tspan><tspan fill="#a1a1aa">applying surgical code patches </tspan><tspan fill="#52525b">............................................. </tspan><tspan fill="#10b981">[ OK ]  </tspan><tspan fill="#3f3f46">|</tspan>
-<tspan x="120" dy="24" fill="#3f3f46">|   </tspan><tspan fill="#10b981">&gt; </tspan><tspan fill="#a1a1aa">running regression evals </tspan><tspan fill="#52525b">................................................... </tspan><tspan fill="#10b981">[ OK ]  </tspan><tspan fill="#3f3f46">|</tspan>
-<tspan x="120" dy="24" fill="#3f3f46">|                                                                                          |</tspan>
-<tspan x="120" dy="24" fill="#3f3f46">+------------------------------------------------------------------------------------------+</tspan>
+  <text x="120" y="320" fill="#fafafa" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="52" font-weight="700">Upgrade models without breaking prod.</text>
+  <text x="120" y="372" fill="#a1a1aa" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="28">An agent skill for Claude Opus 5.5, GPT-6 and Gemini 3.8 migrations.</text>
+
+  <text x="120" y="450" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="21" xml:space="preserve">
+<tspan x="120" dy="0" fill="#f43f5e">x </tspan><tspan fill="#a1a1aa">"thinking.type.disabled" is not supported for this model</tspan>
+<tspan x="120" dy="34" fill="#f43f5e">x </tspan><tspan fill="#a1a1aa">tool_choice: type "tool" and "any" are not supported</tspan>
+<tspan x="120" dy="34" fill="#f43f5e">x </tspan><tspan fill="#a1a1aa">reply truncated: thinking counts toward max_tokens</tspan>
+<tspan x="120" dy="42" fill="#10b981">&gt; </tspan><tspan fill="#e4e4e7">fixed in order, tested, with rollback notes</tspan>
   </text>
+
+  <text x="120" y="596" fill="#52525b" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="20">npx skills add forkadarshp/MPort</text>
 </svg>
