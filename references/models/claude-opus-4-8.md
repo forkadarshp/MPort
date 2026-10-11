@@ -3,6 +3,9 @@
 Released: May 28, 2026
 Model ID: `claude-opus-4-8`
 Pricing: $5 / $25 per million input / output tokens (unchanged from 4.7)
+Status: legacy. Superseded by `claude-opus-5-5.md`. Still the required layer
+when upgrading from Opus 4.7 or older.
+Last verified: legacy, written at the Opus 4.8 launch (May 2026)
 
 ## Changelog (vs Opus 4.7)
 

@@ -3,6 +3,8 @@
 Released: February 5, 2026
 Model ID: `claude-opus-4-6`
 Pricing: $5 / $25 per million input / output tokens
+Status: legacy. Superseded by `claude-opus-4-8.md` and `claude-opus-5-5.md`.
+Last verified: legacy, written at the Opus 4.6 launch (February 2026)
 
 ## Key features
 

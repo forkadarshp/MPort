@@ -3,6 +3,8 @@
 Released: September 29, 2025
 Model ID: `claude-sonnet-4-5`
 Pricing: $3 / $15 per million input / output tokens
+Status: legacy. Superseded by `claude-sonnet-5-5.md`.
+Last verified: legacy, written at the Sonnet 4.5 launch (September 2025)
 
 ## Key features
 

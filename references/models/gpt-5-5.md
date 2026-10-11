@@ -5,6 +5,9 @@ Model ID: `gpt-5.5`
 Pricing: $5 / $30 per million input / output tokens
 Cached input: $0.50 per million tokens
 Long-context (>270k input): 2x input, 1.5x output
+Status: legacy. Superseded by `gpt-6.md`. Still the required layer when
+upgrading from GPT-4o or o-series.
+Last verified: legacy, written at the GPT-5.5 launch (April to May 2026)
 
 ## Variants
 
