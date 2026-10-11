@@ -3,7 +3,7 @@
 [![CI](https://github.com/forkadarshp/modelport/actions/workflows/ci.yml/badge.svg)](https://github.com/forkadarshp/modelport/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Agent Skill](https://img.shields.io/badge/Agent-Skill-111827)](SKILL.md)
-[![Models](https://img.shields.io/badge/Claude_5.x_·_GPT--6_·_Gemini_3.8-guides-blue)](references/models/INDEX.md)
+[![Models](https://img.shields.io/badge/Claude_5.x_·_GPT--6_·_Gemini_3.8-guides-blue)](#supported-models)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 ![ModelPort social preview](assets/social-preview.svg)
