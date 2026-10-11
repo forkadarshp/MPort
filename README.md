@@ -141,17 +141,53 @@ sends parameters they reject and leaves room for always-on thinking. Details in
 
 ## Quickstart
 
-Install once, use everywhere — the universal skills CLI wires ModelPort into Codex, Claude Code, Cursor, and more:
+**1. Install.** Pick the line for your agent.
 
 ```bash
+# Any agent (Claude Code, Codex, Cursor, and others)
 npx skills add forkadarshp/MPort
 ```
 
-*Installing for every agent on your machine? Add `--agent '*'`:*
-
-```bash
-npx skills add forkadarshp/MPort --agent '*'
+```text
+# Claude Code, as a plugin
+/plugin install modelport --marketplace forkadarshp/MPort
 ```
+
+**2. Ask.** In your project, tell the agent where you are going:
+
+```text
+Migrate this repo to claude-opus-5-5. Keep tool and output behavior the same.
+```
+
+**3. Read the report.** You get the changes, the test and smoke results, the
+risks, and the rollback steps. Nothing is called done without evidence.
+
+### Copy-paste prompts
+
+| Goal | Prompt |
+| :--- | :----- |
+| Latest Claude | `Migrate this repo to claude-opus-5-5. Apply required fixes first, then list optional tuning separately.` |
+| Cheaper and faster Claude | `Move the classification and routing calls in src/ to claude-haiku-5-5 and keep the output format identical.` |
+| GPT-6 | `Migrate our OpenAI calls from gpt-5.5 to gpt-6.1-sol. Move tool calling to the Responses API where needed.` |
+| Gemini | `Upgrade our Gemini calls to gemini-3.8-flash and replace thinking_budget with thinking_level.` |
+| Switch provider | `Port services/assistant from OpenAI to Claude Sonnet 5.5. Keep the JSON output contract and tool behavior.` |
+| Fix a broken swap | `We changed the model ID and now get 400s. Find the cause and fix it.` |
+| Prove it | `Migrate to claude-opus-5-5 and benchmark old vs new on our eval set.` |
+
+More in [examples/example-prompts.md](examples/example-prompts.md).
+
+## Why not just read the migration guide?
+
+The provider's guide tells you what changed. You still have to find every
+caller, decide the fix order, re-tune prompts, and check nothing regressed.
+
+| | Provider migration guide | Asking your agent with no skill | ModelPort |
+| :--- | :--- | :--- | :--- |
+| Knows the current breaking changes | Yes, one provider | Only if it is in its training data | Yes, across providers, dated and sourced |
+| Finds every caller, prompt, and tool definition | You do it | Sometimes | Discovery phase, then classification |
+| Keeps required fixes apart from tuning | No | Rarely | Always, and labeled |
+| Ends with evidence | No | Rarely | Tests, live smoke check, rollback notes |
+| Compares old vs new | No | No | Optional three-arm benchmark |
 
 ### Manual Installation (Advanced)
 
@@ -248,7 +284,9 @@ See [examples/example-output.md](examples/example-output.md) for a sample report
 
 ```text
 .
+├── .claude-plugin/            (Claude Code plugin + marketplace manifests)
 ├── .markdownlint-cli2.yaml
+├── _config.yml               (GitHub Pages site config)
 ├── SKILL.md
 ├── README.md
 ├── CONTRIBUTING.md
@@ -322,11 +360,46 @@ npx markdownlint-cli2 "**/*.md"
   with legacy Claude and GPT-5.5 guides layered underneath. Next: Gemini Pro
   and Flash-Lite guides, and self-hosted models.
 - Add regression fixtures for prompt, tool, and structured-output migrations.
-- Ship a runnable benchmark harness to auto-collect the three-arm leaderboard
-  (the methodology lands today in `references/benchmarking.md`).
+- Add OpenAI and Gemini providers to the benchmark harness (Anthropic and an
+  offline simulator ship today).
 - Add real-world before/after migration case studies.
 
 ## FAQ
+
+### How do I fix "thinking.type.disabled is not supported for this model"?
+
+Claude Opus 5.5 and Fable 5.1 always think, so `thinking: {type: "disabled"}`
+returns a 400. Remove the `thinking` field and set `output_config.effort` to
+`low` if you need speed. On Sonnet 5.5, use `{type: "between_tools"}` when a
+route must stay thinking-off. Details in the
+[Opus 5.5 guide](references/models/claude-opus-5-5.md).
+
+### How do I fix "tool_choice: type tool and any are not supported for this model"?
+
+Forced tool use is gone on Claude Opus 5.5, Sonnet 5.5, and Fable 5.1. Use
+`tool_choice: {type: "auto"}` with `strict: true` on the tool and a prompt
+instruction, then check that a call happened. If the forced call only existed
+to get JSON back, use structured outputs.
+
+### Why are my replies cut off after upgrading Claude?
+
+Thinking is on by default on the newer models and counts toward `max_tokens`. A
+limit sized for a short answer can be used up before any text is written. Raise
+`max_tokens` or lower `effort`, and read content blocks by `type` because the
+first block may be a `thinking` block.
+
+### What changes when I move from GPT-5.5 to GPT-6?
+
+Tool calling moves to the Responses API on Astra and 6.1 Sol, `temperature`,
+`top_p`, and `logprobs` go away when reasoning is on, and the `none` and
+`minimal` effort levels are not supported on those two models. See the
+[GPT-6 guide](references/models/gpt-6.md).
+
+### What changes when I move to Gemini 3.8 Flash?
+
+Replace `thinking_budget` with `thinking_level` (sending both returns 400),
+drop the `minimal` level, and remove sampling parameters and prefilled model
+turns. See the [Gemini 3.8 Flash guide](references/models/gemini-3-8-flash.md).
 
 ### How do I migrate to Claude Opus 5.5?
 
@@ -363,8 +436,14 @@ reports a leaderboard with quality, latency, cost, and contract metrics. See
 
 ### Does it work with Claude Code, Codex, and Cursor?
 
-Yes. It's a universal agent skill — install it once and invoke it from Claude
-Code, Codex, Cursor, or any compatible agent.
+Yes. Install it with `npx skills add forkadarshp/MPort` for any compatible
+agent, or as a Claude Code plugin with
+`/plugin install modelport --marketplace forkadarshp/MPort`.
+
+### Do I need an API key or an account?
+
+No. The skill is a set of instructions and guides your agent reads. An API key
+is needed only if you run the benchmark harness against a live model.
 
 ### Which models and providers does it support?
 
