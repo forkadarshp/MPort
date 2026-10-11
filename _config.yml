@@ -1,0 +1,21 @@
+# GitHub Pages site config. The repo root is the site source, so every guide
+# becomes an indexable page. The skill itself does not read this file.
+title: ModelPort
+description: >-
+  Upgrade LLM code to Claude Opus 5.5, GPT-6, or Gemini 3.8 without breaking
+  prod. Breaking changes, fixes, and an agent skill that applies them.
+url: https://forkadarshp.github.io
+baseurl: /MPort
+theme: jekyll-theme-primer
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+exclude:
+  - harness/
+  - scripts/
+  - templates/
+  - agents/
+  - docs/PUBLISHING.md
+  - CODE_OF_CONDUCT.md
+  - SECURITY.md
+  - LICENSE
