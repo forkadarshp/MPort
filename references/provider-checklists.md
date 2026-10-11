@@ -11,10 +11,19 @@ Provider-specific reminders to use during migration.
 - Verify structured output mode and schema handling.
 - Run at least one streamed and one non-streamed smoke test where relevant.
 
-For version-specific changelogs, breaking changes, and quirks, see the
-dedicated model guides in `references/models/` (e.g. `claude-opus-4-8.md`).
+- Check for the 5.x-era breaking changes when targeting the latest models:
+  `thinking: {type: "disabled"}` and `budget_tokens` rejected, forced
+  `tool_choice` (`any`, `tool`) rejected, sampling parameters and assistant
+  prefill rejected, computer use via `computer_toolset_20260801`.
+- Handle `stop_reason: "refusal"` before reading `content`. Add a fallback.
+- Keep conversations append-only when replaying thinking blocks (preserved
+  thinking).
+- Set `output_config.effort` explicitly. Defaults differ per model.
 
-Reference: [Anthropic model deprecations](https://docs.anthropic.com/en/docs/resources/model-deprecations)
+For version-specific changelogs, breaking changes, and quirks, start at
+`references/models/INDEX.md` (e.g. `claude-opus-5-5.md`).
+
+Reference: [Anthropic model deprecations](https://platform.claude.com/docs/en/about-claude/model-deprecations)
 
 ## OpenAI-family migration checklist
 
@@ -23,11 +32,15 @@ Reference: [Anthropic model deprecations](https://docs.anthropic.com/en/docs/res
 - Confirm any reasoning-effort/config fields are valid for target model.
 - Validate JSON mode/structured output behavior if used.
 - Re-check system prompt behavior under new model family.
+- Use the Responses API for tool calling on the newest models.
+- Remove `temperature`, `top_p`, and `logprobs` when reasoning is on.
+- Replace unsupported effort values (`none`, `minimal`) per the target model.
+- Re-check prompt caching parameters (for example `prompt_cache_options.ttl`).
 
 For version-specific changelogs, reasoning effort levels, and migration steps,
-see the dedicated model guides in `references/models/` (e.g. `gpt-5-5.md`).
+start at `references/models/INDEX.md` (e.g. `gpt-6.md`).
 
-Reference: [OpenAI model endpoint compatibility](https://platform.openai.com/docs/models)
+Reference: [OpenAI models](https://developers.openai.com/api/docs/models)
 
 ## Gemini-family migration checklist
 
@@ -36,6 +49,13 @@ Reference: [OpenAI model endpoint compatibility](https://platform.openai.com/doc
 - Re-check safety settings and blocked-output behavior.
 - Validate multimodal pathways if image/file inputs are used.
 - Confirm output format consistency against existing parsers.
+- Replace `thinking_budget` with `thinking_level`. Do not send both.
+- Remove `temperature`, `top_p`, `top_k`, `candidate_count`, and prefilled
+  model turns on Gemini 3 and later.
+- Re-check function-calling response shape and thought-signature handling.
+
+For version-specific steps, start at `references/models/INDEX.md` (e.g.
+`gemini-3-8-flash.md`).
 
 Reference: [Gemini model versions](https://ai.google.dev/gemini-api/docs/models)
 
