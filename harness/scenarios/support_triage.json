@@ -2,7 +2,7 @@
   "name": "support-ticket-triage",
   "role": "You are a support-triage assistant.",
   "description": "Classify a support ticket, optionally call one tool, and return a strict JSON object. Exercises output-contract conformance and tool-calling accuracy across a model migration.",
-  "models": { "old": "claude-opus-4-6", "new": "claude-opus-4-8" },
+  "models": { "old": "claude-opus-4-6", "new": "claude-opus-5-5" },
   "categories": ["billing", "technical", "account", "other"],
   "tools": [
     { "name": "lookup_order", "args": ["order_id"] },
@@ -32,6 +32,6 @@
   ],
   "sim": {
     "claude-opus-4-6": { "literalness": 0.5, "base": 0.72, "latency_ms": 3800, "price_in": 0.000005, "price_out": 0.000025 },
-    "claude-opus-4-8": { "literalness": 0.9, "base": 0.76, "latency_ms": 2300, "price_in": 0.000005, "price_out": 0.000025 }
+    "claude-opus-5-5": { "literalness": 0.9, "base": 0.76, "latency_ms": 2300, "price_in": 0.000004, "price_out": 0.00002 }
   }
 }

@@ -70,13 +70,20 @@ slightly. Two real takeaways the harness surfaces:
   Opus 4.7+ trait: newer models follow instructions more literally, punishing
   vague prompts and rewarding precise ones). The grading, scoring, and
   leaderboard pipeline is real; **the numbers are illustrative, not measured.**
-- **`anthropic`** — real Messages API calls. Same graders, real numbers.
+- **`anthropic`** — real Messages API calls. Same graders, real numbers. Safe
+  for current models: it never sends `temperature`, `thinking`, prefill, or a
+  forced `tool_choice` (all rejected by Opus 5.5, Sonnet 5.5, Haiku 5.5, and
+  Fable 5.1), reads content blocks by type, and treats a `refusal` stop reason
+  as a failed case. Add an optional `request` block to a scenario to set
+  `effort` and `max_tokens` (default 4096, which leaves room for always-on
+  thinking).
 
 ## Define your own scenario
 
 Copy `scenarios/support_triage.json` and edit:
 
 - `models` — old/new model IDs
+- `request` — optional `{"effort": "low", "max_tokens": 4096}` for `--provider anthropic`
 - `prompts.baseline` / `prompts.enhanced` — the configs for arms A/B vs C
 - `tools`, `categories` — the task surface
 - `eval_cases` — inputs + expected `{category, tool, args}` and a `difficulty`
