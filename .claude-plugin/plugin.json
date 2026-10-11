@@ -1,0 +1,14 @@
+{
+  "name": "modelport",
+  "displayName": "ModelPort",
+  "version": "0.2.0",
+  "description": "Upgrade LLM code to newer models (Claude 5.x, GPT-6, Gemini 3.8) without breaking prod. Applies each model's breaking-change fixes, then proves the upgrade with tests and evals.",
+  "author": {
+    "name": "Kumar Adarsh Pandita",
+    "url": "https://github.com/forkadarshp"
+  },
+  "homepage": "https://github.com/forkadarshp/MPort",
+  "repository": "https://github.com/forkadarshp/MPort",
+  "license": "MIT",
+  "keywords": ["model-migration", "llm-migration", "prompt-migration", "model-upgrade", "breaking-changes", "evals"]
+}

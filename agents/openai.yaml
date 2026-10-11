@@ -1,4 +1,4 @@
 interface:
   display_name: "ModelPort"
-  short_description: "Migrate prompts, agents, and LLM code safely"
-  default_prompt: "Use $modelport-skill and the starter prompt template to migrate this codebase from the current model to the newer target model with validation evidence and rollback notes."
+  short_description: "Upgrade to newer LLMs (Claude 5.x, GPT-6, Gemini 3.8) without breaking prod"
+  default_prompt: "Use $modelport-skill to migrate this codebase to the target model. Read references/models/INDEX.md, apply required compatibility fixes before optional tuning, and return validation evidence plus rollback notes."

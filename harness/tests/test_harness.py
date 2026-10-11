@@ -9,7 +9,7 @@ HARNESS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(HARNESS))
 
 from graders import Response, grade_contract, grade_task, grade_tool  # noqa: E402
-from providers import SimProvider, explicitness  # noqa: E402
+from providers import DEFAULT_MAX_TOKENS, AnthropicProvider, SimProvider, explicitness  # noqa: E402
 import run  # noqa: E402
 
 
@@ -81,3 +81,70 @@ class TestSimAndLoop(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class _Block:
+    def __init__(self, type, **kw):
+        self.type = type
+        self.__dict__.update(kw)
+
+
+class _Msg:
+    def __init__(self, content, stop_reason="end_turn"):
+        self.content = content
+        self.stop_reason = stop_reason
+        self.usage = type("U", (), {"input_tokens": 10, "output_tokens": 5})()
+
+
+class _FakeClient:
+    """Records the request and returns a canned message (no network)."""
+
+    def __init__(self, msg):
+        self.calls = []
+        self.messages = self
+        self._msg = msg
+
+    def create(self, **kwargs):
+        self.calls.append(kwargs)
+        return self._msg
+
+
+def _provider(scenario_extra, msg):
+    prov = AnthropicProvider.__new__(AnthropicProvider)  # skip the anthropic import
+    prov.scenario = {"tools": [{"name": "lookup", "args": ["id"]}], **scenario_extra}
+    prov.client = _FakeClient(msg)
+    return prov
+
+
+class TestAnthropicProviderNewModels(unittest.TestCase):
+    CASE = {"input": "where is order 4471?"}
+
+    def test_request_avoids_params_current_models_reject(self):
+        prov = _provider({}, _Msg([_Block("text", text="{}")]))
+        prov.generate("claude-opus-5-5", "sys", self.CASE)
+        sent = prov.client.calls[0]
+        for banned in ("temperature", "top_p", "top_k", "thinking", "tool_choice"):
+            self.assertNotIn(banned, sent)
+        self.assertEqual(sent["max_tokens"], DEFAULT_MAX_TOKENS)
+        self.assertEqual(sent["messages"][-1]["role"], "user")  # no prefill
+
+    def test_effort_is_sent_only_when_configured(self):
+        prov = _provider({"request": {"effort": "low", "max_tokens": 2048}},
+                         _Msg([_Block("text", text="{}")]))
+        prov.generate("claude-haiku-5-5", "sys", self.CASE)
+        sent = prov.client.calls[0]
+        self.assertEqual(sent["output_config"], {"effort": "low"})
+        self.assertEqual(sent["max_tokens"], 2048)
+
+    def test_reads_blocks_by_type_after_leading_thinking_block(self):
+        msg = _Msg([_Block("thinking", thinking=""),
+                    _Block("tool_use", name="lookup", input={"id": "4471"})])
+        resp = _provider({}, msg).generate("claude-opus-5-5", "sys", self.CASE)
+        self.assertEqual(resp.tool_name, "lookup")
+        self.assertEqual(resp.tool_args, {"id": "4471"})
+
+    def test_refusal_grades_as_empty_response(self):
+        resp = _provider({}, _Msg([], stop_reason="refusal")).generate(
+            "claude-opus-5-5", "sys", self.CASE)
+        self.assertEqual(resp.text, "")
+        self.assertIsNone(resp.tool_name)

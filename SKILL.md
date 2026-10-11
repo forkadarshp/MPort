@@ -1,6 +1,6 @@
 ---
 name: modelport-skill
-description: Use when the user asks to migrate, upgrade, or port prompts, agents, tools, or codebases from one LLM model or provider version to another. Also use when auditing or continuing migration work started by another agent. Covers API calls, prompt assets, agent configs, tool definitions, tests, docs, runtime settings, rollout plans, and handoff coordination. Can also benchmark pre/post migration systems (old model and prompts vs new model and enhanced system) and report the stats as evidence.
+description: Use when the user asks to migrate, upgrade, or port prompts, agents, tools, or code to a newer LLM or a different provider, including Claude Opus 5.5 / Sonnet 5.5 / Haiku 5.5 / Fable 5.1, GPT-6, and Gemini 3.8, or replace a deprecated or retired model. Also use when a model swap returns 400s (thinking disabled, budget_tokens, forced tool_choice, temperature/top_p, prefill, computer_20251124), truncates replies, or breaks parsers and tool calls, and when auditing migration work another agent started. Fixes API calls, prompts, tool definitions, tests, and configs, then proves it with tests, a live smoke check, and an optional old-vs-new benchmark.
 ---
 
 # ModelPort Skill
@@ -89,9 +89,18 @@ Collect before editing:
   report (baseline old/old vs new/enhanced, plus the raw-swap control)? Opt-in.
   Ask once, up front — capturing the baseline later is impossible.
 
-If source or target matches a model with a dedicated guide in
-`references/models/`, read that guide before proceeding. Model guides contain
+Look up source and target in `references/models/INDEX.md`. If either has a
+dedicated guide, read it before proceeding, and follow the upgrade path in the
+index (older guides are layered under newer ones). Model guides contain
 changelogs, breaking changes, migration steps, and version-specific quirks.
+
+Freshness check, before trusting any guide:
+
+- `Last verified:` older than 30 days, or the target is not in the index →
+  fetch the provider's official migration page first. Never guess model IDs,
+  parameters, prices, or limits.
+- Record the source and date used in the migration report.
+- Facts marked as secondary-source in a guide → confirm on the provider page.
 
 If benchmarking is requested, read `references/benchmarking.md` and capture the
 baseline (Arm A) in Phase 0 before any edit — it cannot be reconstructed later.
@@ -126,9 +135,12 @@ Read:
 
 - `references/migration-playbook.md`
 - `references/provider-checklists.md`
+- `references/models/INDEX.md` — registry, upgrade paths, freshness rules
+- `references/breaking-changes.md` — error/symptom → cause → fix lookup across
+  providers; read first when a swap returns 400s or behaves differently
 - `references/models/<model>.md` — when source or target matches a model with
-  a dedicated guide (e.g. `claude-opus-4-8.md`, `claude-opus-4-6.md`,
-  `claude-sonnet-4-5.md`, `gpt-5-5.md`)
+  a dedicated guide (Claude Fable 5.1 / Opus 5.5 / Sonnet 5.5 / Haiku 5.5,
+  GPT-6, Gemini 3.8 Flash, plus legacy Claude and GPT-5.5 guides)
 - `references/prompt-template-research.md` — when creating or improving a
   migration prompt or reusable migration request
 - `references/migration-patterns.md` — when choosing rollout strategy,
@@ -249,7 +261,7 @@ Format per `examples/example-output.md`.
 - Migration strategy: `references/migration-playbook.md`
 - Provider checklists: `references/provider-checklists.md`
 - Model-specific guides: `references/models/` (per-version changelogs, quirks,
-  migration steps)
+  migration steps). Start at `references/models/INDEX.md`.
 - Prompt design research: `references/prompt-template-research.md`
 - Migration patterns: `references/migration-patterns.md`
 - Validation proof gates: `references/validation-proof.md`

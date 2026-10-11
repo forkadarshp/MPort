@@ -2,7 +2,7 @@
   "name": "ops-tool-routing",
   "role": "You are an ops-assistant that routes a request to exactly one tool.",
   "description": "Route a natural-language ops request to one of six tools with the right multi-field args, and return strict JSON. Harder than triage: more tools (more ways to mis-route), multi-arg calls, and several compound/ambiguous cases that prompting alone can't fully resolve.",
-  "models": { "old": "claude-opus-4-6", "new": "claude-opus-4-8" },
+  "models": { "old": "claude-opus-4-6", "new": "claude-opus-5-5" },
   "categories": ["deploy", "reliability", "observability", "incident", "other"],
   "tools": [
     { "name": "restart_service", "args": ["service"] },
@@ -34,6 +34,6 @@
   ],
   "sim": {
     "claude-opus-4-6": { "literalness": 0.5, "base": 0.66, "latency_ms": 3800, "price_in": 0.000005, "price_out": 0.000025 },
-    "claude-opus-4-8": { "literalness": 0.9, "base": 0.70, "latency_ms": 2300, "price_in": 0.000005, "price_out": 0.000025 }
+    "claude-opus-5-5": { "literalness": 0.9, "base": 0.70, "latency_ms": 2300, "price_in": 0.000004, "price_out": 0.00002 }
   }
 }

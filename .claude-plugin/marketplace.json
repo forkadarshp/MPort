@@ -1,0 +1,15 @@
+{
+  "name": "modelport",
+  "description": "ModelPort: upgrade LLM code to newer models without breaking prod",
+  "owner": {
+    "name": "Kumar Adarsh Pandita",
+    "url": "https://github.com/forkadarshp"
+  },
+  "plugins": [
+    {
+      "name": "modelport",
+      "source": "./",
+      "description": "Migrate prompts, tools, API calls, and tests to a newer LLM, with per-model breaking-change guides and proof that the upgrade worked."
+    }
+  ]
+}

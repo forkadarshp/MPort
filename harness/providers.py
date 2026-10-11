@@ -16,9 +16,13 @@ identical regardless of provider.
 from __future__ import annotations
 
 import json
+import sys
 import time
 
 from graders import Response
+
+# Leaves headroom for always-on thinking on current Claude models.
+DEFAULT_MAX_TOKENS = 4096
 
 # Simulator formula constants (transparent, tunable). See module docstring.
 _BOOST_EXPLICIT = 0.30      # precise prompt raises fidelity
@@ -145,23 +149,45 @@ class AnthropicProvider:
             for t in self.scenario["tools"]
             if t["name"] != "none"
         ]
+        # Optional per-scenario request settings. Newer models (Opus 5.5,
+        # Haiku 5.5, Fable 5.1) always think and thinking counts toward
+        # max_tokens, so the default leaves room for it. Sampling parameters,
+        # prefill, forced tool_choice, and thinking config are deliberately
+        # never sent: current models reject them.
+        request = self.scenario.get("request", {})
+        kwargs = {}
+        if request.get("effort"):
+            kwargs["output_config"] = {"effort": request["effort"]}
+
         start = time.time()
         msg = self.client.messages.create(
             model=model,
-            max_tokens=512,
+            max_tokens=request.get("max_tokens", DEFAULT_MAX_TOKENS),
             system=system_prompt,
             tools=tools,
             messages=[{"role": "user", "content": case["input"]}],
+            **kwargs,
         )
         latency_ms = (time.time() - start) * 1000
 
+        # Classifier declines arrive as HTTP 200 with stop_reason "refusal".
+        # Grade them as an empty response instead of reading content[0].
+        if msg.stop_reason == "max_tokens":
+            print(
+                f"warning: {model} hit max_tokens={request.get('max_tokens', DEFAULT_MAX_TOKENS)}; "
+                "raise scenario request.max_tokens or lower request.effort",
+                file=sys.stderr,
+            )
+
         text, tool_name, tool_args = "", None, {}
-        for block in msg.content:
-            if block.type == "text":
-                text += block.text
-            elif block.type == "tool_use":
-                tool_name = block.name
-                tool_args = dict(block.input)
+        if msg.stop_reason != "refusal":
+            # Read blocks by type: a response can start with thinking blocks.
+            for block in msg.content:
+                if block.type == "text":
+                    text += block.text
+                elif block.type == "tool_use":
+                    tool_name = block.name
+                    tool_args = dict(block.input)
 
         return Response(
             text=text,

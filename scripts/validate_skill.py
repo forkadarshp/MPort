@@ -18,6 +18,7 @@ REQUIRED_PATHS = [
     "references/provider-checklists.md",
     "references/validation-proof.md",
     "references/benchmarking.md",
+    "references/breaking-changes.md",
     "references/output-style.md",
     "templates/migration-starter-prompt.md",
     "examples/example-prompts.md",
@@ -102,11 +103,49 @@ def validate_skill(root: Path) -> None:
             fail(f"Example output missing section: {heading}")
 
 
+def validate_model_guides(root: Path) -> None:
+    """Every model guide needs metadata and an INDEX.md entry."""
+    models_dir = root / "references" / "models"
+    index_path = models_dir / "INDEX.md"
+    if not index_path.is_file():
+        fail("Missing required file: references/models/INDEX.md")
+    index = index_path.read_text(encoding="utf-8")
+
+    for guide in sorted(models_dir.glob("*.md")):
+        if guide.name == "INDEX.md":
+            continue
+        text = guide.read_text(encoding="utf-8")
+        head = "\n".join(text.splitlines()[:20])
+
+        if not re.search(r"^Model IDs?: `", head, re.MULTILINE):
+            fail(f"{guide.name}: missing 'Model ID:' line in the header")
+
+        verified = re.search(r"^Last verified: (.+)$", head, re.MULTILINE)
+        if not verified:
+            fail(f"{guide.name}: missing 'Last verified:' line in the header")
+        value = verified.group(1).strip()
+        if not (re.match(r"\d{4}-\d{2}-\d{2}\b", value) or value.startswith("legacy")):
+            fail(
+                f"{guide.name}: 'Last verified:' must start with an ISO date "
+                "(YYYY-MM-DD) or 'legacy'"
+            )
+
+        is_legacy = value.startswith("legacy")
+        if not is_legacy and not re.search(r"^Source: ", head, re.MULTILINE):
+            fail(f"{guide.name}: current guide needs a 'Source:' line")
+        if is_legacy and not re.search(r"^Status: legacy", head, re.MULTILINE):
+            fail(f"{guide.name}: legacy guide needs a 'Status: legacy' line")
+
+        if guide.name not in index:
+            fail(f"{guide.name}: not listed in references/models/INDEX.md")
+
+
 def main() -> None:
     root = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
     if not root.is_dir():
         fail(f"Not a directory: {root}")
     validate_skill(root)
+    validate_model_guides(root)
     print("Skill package is valid.")
 
 
