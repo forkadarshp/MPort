@@ -7,8 +7,8 @@
     "name": "Kumar Adarsh Pandita",
     "url": "https://github.com/forkadarshp"
   },
-  "homepage": "https://github.com/forkadarshp/MPort",
-  "repository": "https://github.com/forkadarshp/MPort",
+  "homepage": "https://github.com/forkadarshp/modelport",
+  "repository": "https://github.com/forkadarshp/modelport",
   "license": "MIT",
   "keywords": ["model-migration", "llm-migration", "prompt-migration", "model-upgrade", "breaking-changes", "evals"]
 }

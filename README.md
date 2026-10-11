@@ -1,9 +1,9 @@
 # ModelPort
 
-[![CI](https://github.com/forkadarshp/MPort/actions/workflows/ci.yml/badge.svg)](https://github.com/forkadarshp/MPort/actions/workflows/ci.yml)
+[![CI](https://github.com/forkadarshp/modelport/actions/workflows/ci.yml/badge.svg)](https://github.com/forkadarshp/modelport/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Agent Skill](https://img.shields.io/badge/Agent-Skill-111827)](SKILL.md)
-[![Models](https://img.shields.io/badge/Claude_5.x_·_GPT--6_·_Gemini_3.8-guides-blue)](references/models/INDEX.md)
+[![Models](https://img.shields.io/badge/Claude_5.x_·_GPT--6_·_Gemini_3.8-guides-blue)](#supported-models)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 ![ModelPort social preview](assets/social-preview.svg)
@@ -15,7 +15,7 @@ prompts, tool definitions, API calls, and tests around a model swap, using
 per-model guides that track each provider's breaking changes. Then it proves the
 upgrade worked with tests, a live smoke check, and optional old-vs-new evals.
 
-> **Install:** `npx skills add forkadarshp/MPort`, then tell your agent
+> **Install:** `npx skills add forkadarshp/modelport`, then tell your agent
 > *"migrate this repo to claude-opus-5-5"*. See [Quickstart](#quickstart).
 
 ## Seen one of these after a model swap?
@@ -145,12 +145,12 @@ sends parameters they reject and leaves room for always-on thinking. Details in
 
 ```bash
 # Any agent (Claude Code, Codex, Cursor, and others)
-npx skills add forkadarshp/MPort
+npx skills add forkadarshp/modelport
 ```
 
 ```text
 # Claude Code, as a plugin
-/plugin install modelport --marketplace forkadarshp/MPort
+/plugin install modelport --marketplace forkadarshp/modelport
 ```
 
 **2. Ask.** In your project, tell the agent where you are going:
@@ -196,8 +196,8 @@ If you prefer to fork and modify the skill locally:
 Clone:
 
 ```bash
-git clone https://github.com/forkadarshp/MPort.git
-cd MPort
+git clone https://github.com/forkadarshp/modelport.git
+cd modelport
 ```
 
 Install as a local skill with a symlink (Codex example):
@@ -436,9 +436,9 @@ reports a leaderboard with quality, latency, cost, and contract metrics. See
 
 ### Does it work with Claude Code, Codex, and Cursor?
 
-Yes. Install it with `npx skills add forkadarshp/MPort` for any compatible
+Yes. Install it with `npx skills add forkadarshp/modelport` for any compatible
 agent, or as a Claude Code plugin with
-`/plugin install modelport --marketplace forkadarshp/MPort`.
+`/plugin install modelport --marketplace forkadarshp/modelport`.
 
 ### Do I need an API key or an account?
 

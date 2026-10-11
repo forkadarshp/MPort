@@ -22,5 +22,5 @@
 <tspan x="120" dy="42" fill="#10b981">&gt; </tspan><tspan fill="#e4e4e7">fixed in order, tested, with rollback notes</tspan>
   </text>
 
-  <text x="120" y="596" fill="#52525b" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="20">npx skills add forkadarshp/MPort</text>
+  <text x="120" y="596" fill="#52525b" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="20">npx skills add forkadarshp/modelport</text>
 </svg>
