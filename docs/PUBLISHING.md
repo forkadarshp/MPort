@@ -75,6 +75,40 @@ Version history:
   current Claude models.
 - `v1.0.0`: stable workflow validated on real migrations (case studies).
 
+## Install channels
+
+Keep both working. Test them after any change to `SKILL.md` or the manifests.
+
+| Channel | User command | Check |
+| :------ | :----------- | :---- |
+| Skills CLI (any agent) | `npx skills add forkadarshp/MPort` | `npx skills add . --list` finds one skill |
+| Claude Code plugin | `/plugin install modelport --marketplace forkadarshp/MPort` | `claude plugin validate .` passes |
+
+Listing on skills.sh: <https://skills.sh/forkadarshp/mport/modelport-skill>.
+On 2026-10-11 it showed 1 install and "No SKILL.md available for this skill",
+so the page had no description. The raw `SKILL.md` URL resolves, so the cause is
+on the directory side or a stale snapshot. Re-check after the next release and
+report it to the skills.sh maintainers if it persists.
+
+Wider reach for the plugin: submit it to Anthropic's plugin directory (see
+"Submit to Anthropic's directory" in the Claude Code plugin docs).
+
+## Website (GitHub Pages)
+
+`_config.yml` makes the repo root a Jekyll site, so every guide becomes its own
+indexable page with a title taken from its first heading. Pages is off until
+you enable it: Settings, Pages, deploy from branch `main`, folder `/`. Then set
+the repo homepage to the site URL and confirm the build passed under Actions.
+The config has not been built locally, so check the first build.
+
+## Naming
+
+The repo is `MPort`, the product is ModelPort, and the skill is
+`modelport-skill`. Nobody searches for "MPort". Renaming the repo to
+`modelport` puts the search term in the URL and in the install command. GitHub
+redirects the old URL, but update the README, the manifests, `_config.yml`, and
+this file in the same change.
+
 ## Distribution
 
 `npx skills add` installs feed the public skills directory at skills.sh, so
@@ -91,7 +125,10 @@ return:
 4. **Provider communities** (Anthropic and OpenAI developer Discords and
    forums) as an answer to a real migration question, with the relevant guide
    linked.
-5. **Awesome lists** for agent skills and Claude Code, via pull request.
+5. **Awesome lists**, via pull request. Read each list's contribution rules
+   first. Candidates: `hesreallyhim/awesome-claude-code`,
+   `travisvn/awesome-claude-skills`, `ComposioHQ/awesome-claude-skills`,
+   `karanb192/awesome-claude-skills`, `VoltAgent/awesome-agent-skills`.
 
 Before posting, check each community's self-promotion rules.
 
