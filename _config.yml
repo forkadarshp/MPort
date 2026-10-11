@@ -5,7 +5,7 @@ description: >-
   Upgrade LLM code to Claude Opus 5.5, GPT-6, or Gemini 3.8 without breaking
   prod. Breaking changes, fixes, and an agent skill that applies them.
 url: https://forkadarshp.github.io
-baseurl: /MPort
+baseurl: /modelport
 theme: jekyll-theme-primer
 plugins:
   - jekyll-seo-tag

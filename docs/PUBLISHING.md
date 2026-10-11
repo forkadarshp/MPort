@@ -81,14 +81,18 @@ Keep both working. Test them after any change to `SKILL.md` or the manifests.
 
 | Channel | User command | Check |
 | :------ | :----------- | :---- |
-| Skills CLI (any agent) | `npx skills add forkadarshp/MPort` | `npx skills add . --list` finds one skill |
-| Claude Code plugin | `/plugin install modelport --marketplace forkadarshp/MPort` | `claude plugin validate .` passes |
+| Skills CLI (any agent) | `npx skills add forkadarshp/modelport` | `npx skills add . --list` finds one skill |
+| Claude Code plugin | `/plugin install modelport --marketplace forkadarshp/modelport` | `claude plugin validate .` passes |
 
-Listing on skills.sh: <https://skills.sh/forkadarshp/mport/modelport-skill>.
-On 2026-10-11 it showed 1 install and "No SKILL.md available for this skill",
-so the page had no description. The raw `SKILL.md` URL resolves, so the cause is
-on the directory side or a stale snapshot. Re-check after the next release and
-report it to the skills.sh maintainers if it persists.
+Listing on skills.sh: the directory keys pages by repo path, so the rename on
+2026-10-11 starts a new page at
+<https://skills.sh/forkadarshp/modelport/modelport-skill> once someone installs
+from the new path. The old page,
+<https://skills.sh/forkadarshp/mport/modelport-skill>, showed 1 install and "No
+SKILL.md available for this skill" on that date, so it had no description. The
+raw `SKILL.md` URL resolves, so the cause is on the directory side or a stale
+snapshot. Check the new page after the first install and report it to the
+skills.sh maintainers if the description is still missing.
 
 Wider reach for the plugin: submit it to Anthropic's plugin directory (see
 "Submit to Anthropic's directory" in the Claude Code plugin docs).
@@ -96,18 +100,18 @@ Wider reach for the plugin: submit it to Anthropic's plugin directory (see
 ## Website (GitHub Pages)
 
 `_config.yml` makes the repo root a Jekyll site, so every guide becomes its own
-indexable page with a title taken from its first heading. Pages is off until
-you enable it: Settings, Pages, deploy from branch `main`, folder `/`. Then set
-the repo homepage to the site URL and confirm the build passed under Actions.
-The config has not been built locally, so check the first build.
+indexable page with a title taken from its first heading. Pages deploys from
+branch `main`, folder `/`, to <https://forkadarshp.github.io/modelport/>, which
+is also the repo homepage. Each push to `main` rebuilds the site; a failed
+build shows under Actions as "pages build and deployment".
 
 ## Naming
 
-The repo is `MPort`, the product is ModelPort, and the skill is
-`modelport-skill`. Nobody searches for "MPort". Renaming the repo to
-`modelport` puts the search term in the URL and in the install command. GitHub
-redirects the old URL, but update the README, the manifests, `_config.yml`, and
-this file in the same change.
+The repo is `modelport`, the product is ModelPort, and the skill is
+`modelport-skill`. The repo was called `MPort` until 2026-10-11. GitHub
+redirects the old URL, so old links and `npx skills add forkadarshp/MPort` keep
+working, but do not create a new repo named `MPort` under the same account:
+that would break the redirect.
 
 ## Distribution
 
@@ -150,7 +154,7 @@ illustrative; --provider anthropic gives measured ones.
 
 Guides carry a verified-on date and a source, and CI flags stale ones.
 
-https://github.com/forkadarshp/MPort
+https://github.com/forkadarshp/modelport
 ```
 
 ### Draft: thread
@@ -166,7 +170,7 @@ https://github.com/forkadarshp/MPort
 references/breaking-changes.md
 
 3/ ModelPort is an agent skill that applies those fixes for you, in order, and
-ends with tests, a smoke check and rollback notes. npx skills add forkadarshp/MPort
+ends with tests, a smoke check and rollback notes. npx skills add forkadarshp/modelport
 ```
 
 ## Measure
