@@ -1,4 +1,6 @@
-# Claude Haiku 5.5
+# Migrating to Claude Haiku 5.5: breaking changes and fixes
+
+What breaks when you move code from Haiku 4.5 to `claude-haiku-5-5`, the fix for each, and what to re-tune.
 
 Model ID: `claude-haiku-5-5` (Amazon Bedrock: `anthropic.claude-haiku-5-5`)
 Pricing: $0.10 / $0.50 per million input / output tokens for prompts up to

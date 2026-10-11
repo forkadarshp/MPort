@@ -1,4 +1,6 @@
-# Gemini 3.8 Flash
+# Migrating to Gemini 3.8 Flash: breaking changes and fixes
+
+What changes when you move code to `gemini-3.8-flash`, the fix for each, and what to re-tune.
 
 Model ID: `gemini-3.8-flash` (generally available)
 Context / output: 1M tokens / 64K tokens

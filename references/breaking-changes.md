@@ -1,4 +1,4 @@
-# Breaking Changes Quick Lookup
+# LLM upgrade errors and fixes: Claude 5.x, GPT-6, Gemini 3.8
 
 Symptom to cause to fix, across providers. Use it when a model swap starts
 returning errors or behaving differently. Each row points at the guide that

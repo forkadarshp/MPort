@@ -1,4 +1,6 @@
-# Claude Fable 5.1
+# Migrating to Claude Fable 5.1: breaking changes and fixes
+
+What breaks when you move code to `claude-fable-5-1`, the fix for each, and what to re-tune.
 
 Model ID: `claude-fable-5-1` (Project Glasswing counterpart:
 `claude-mythos-5-1`)

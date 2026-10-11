@@ -1,4 +1,6 @@
-# Claude Opus 5.5
+# Migrating to Claude Opus 5.5: breaking changes and fixes
+
+What breaks when you move code to `claude-opus-5-5`, the fix for each, and what to re-tune.
 
 Model ID: `claude-opus-5-5` (Amazon Bedrock: `anthropic.claude-opus-5-5`)
 Pricing: $4 / $20 per million input / output tokens (Opus 5: $5 / $25)

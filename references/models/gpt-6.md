@@ -1,4 +1,6 @@
-# GPT-6 family
+# Migrating to GPT-6 (Astra, 6.1 Sol, Sol, Luna): breaking changes and fixes
+
+What changes when you move code from GPT-5.x to the GPT-6 family, the fix for each, and what to re-tune.
 
 Model IDs: `gpt-6-astra`, `gpt-6.1-sol`, `gpt-6-sol`, `gpt-6-luna`
 Context / output: 1,050,000 tokens (922,000 max input) / 128,000 tokens

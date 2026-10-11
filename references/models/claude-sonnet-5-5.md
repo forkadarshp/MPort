@@ -1,4 +1,6 @@
-# Claude Sonnet 5.5
+# Migrating to Claude Sonnet 5.5: breaking changes and fixes
+
+What breaks when you move code to `claude-sonnet-5-5`, the fix for each, and what to re-tune.
 
 Model ID: `claude-sonnet-5-5` (Amazon Bedrock: `anthropic.claude-sonnet-5-5`)
 Pricing: $2 / $10 per million input / output tokens (same as Sonnet 5)
